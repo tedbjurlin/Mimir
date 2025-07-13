@@ -1,11 +1,13 @@
-import { Provider } from "@/components/ui/provider";
+import { HStack } from "@chakra-ui/react";
 import "./App.css";
+import Sidebar from "./components/Sidebar";
 
 const App: React.FC = () => {
   return (
-    <Provider>
+    <HStack>
+      <Sidebar />
       <h1>Hello world!</h1>
-    </Provider>
+    </HStack>
   );
 }
 
