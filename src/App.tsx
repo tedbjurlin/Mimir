@@ -1,11 +1,11 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "@/components/ui/provider";
 import "./App.css";
 
 const App: React.FC = () => {
   return (
-    <ChakraProvider>
+    <Provider>
       <h1>Hello world!</h1>
-    </ChakraProvider>
+    </Provider>
   );
 }
 
