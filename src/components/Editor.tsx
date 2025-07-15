@@ -13,11 +13,12 @@ const Editor: React.FC = () => {
   }, []);
 
   return (
-    <Box minH="100%">
+    <Box h="100%">
       <ReactCodeMirror
         value={value}
         theme={basicDark}
         onChange={onChange}
+        height="100vh"
         extensions={[
           markdown({
             base: markdownLanguage,
