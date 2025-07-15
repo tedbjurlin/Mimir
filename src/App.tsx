@@ -1,10 +1,11 @@
 import { Provider } from "@/components/ui/provider";
 import "./App.css";
+import Editor from "./components/Editor";
 
 const App: React.FC = () => {
   return (
     <Provider>
-      <h1>Hello world!</h1>
+      <Editor />
     </Provider>
   );
 }
