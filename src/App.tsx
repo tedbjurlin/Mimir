@@ -1,13 +1,16 @@
 import { HStack } from "@chakra-ui/react";
 import "./App.css";
-import Sidebar from "./components/Sidebar";
+//import Sidedock from "./components/Sidedock";
+//import BodyContainer from "./components/BodyContainer";
+import TabEditor from "./components/TabEditor";
 
 const App: React.FC = () => {
   return (
-    <HStack>
-      <Sidebar />
-      <h1>Hello world!</h1>
-    </HStack>
+    // <HStack>
+    //   <Sidedock />
+    //   <h1>Hello world!</h1>
+    // </HStack>
+    <TabEditor />
   );
 }
 

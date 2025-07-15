@@ -1,10 +1,10 @@
 import { Box, Icon, Tabs, VStack } from "@chakra-ui/react";
 import { LuAtom, LuBook, LuBookMarked, LuLightbulb, LuNotebookPen, LuSearch } from "react-icons/lu";
 
-const Sidebar: React.FC = () => {
+const Sidedock: React.FC = () => {
   return (
     <Box h="100%">
-        <Tabs.Root orientation="vertical" deselectable activationMode="manual" h="100%">
+        <Tabs.Root orientation="vertical" deselectable activationMode="manual" minH="100vh">
             <Tabs.List>
                 <Tabs.Trigger value="Writings">
                     <LuNotebookPen size="24px" strokeWidth="1.5"/>
@@ -23,19 +23,19 @@ const Sidebar: React.FC = () => {
                 </Tabs.Trigger>
                 <Tabs.Indicator />
             </Tabs.List>
-            <Tabs.Content value="Writings">
+            <Tabs.Content value="Writings" resize='horizontal'>
                 Writings
             </Tabs.Content>
-            <Tabs.Content value="Thoughts">
+            <Tabs.Content value="Thoughts" resize='horizontal'>
                 Thoughts
             </Tabs.Content>
-            <Tabs.Content value="Concepts">
+            <Tabs.Content value="Concepts" resize='horizontal'>
                 Concepts
             </Tabs.Content>
-            <Tabs.Content value="Reference">
+            <Tabs.Content value="Reference" resize='horizontal'>
                 Reference
             </Tabs.Content>
-            <Tabs.Content value="Search">
+            <Tabs.Content value="Search" resize='horizontal'>
                 Search
             </Tabs.Content>
         </Tabs.Root>
@@ -43,4 +43,4 @@ const Sidebar: React.FC = () => {
   );
 }
 
-export default Sidebar;
+export default Sidedock;
