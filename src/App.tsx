@@ -1,16 +1,14 @@
 import { HStack } from "@chakra-ui/react";
 import "./App.css";
-//import Sidedock from "./components/Sidedock";
-//import BodyContainer from "./components/BodyContainer";
-import TabEditor from "./components/TabEditor";
+import { Provider } from "@/components/ui/provider";
+import "./App.css";
+import Editor from "./components/Editor";
 
 const App: React.FC = () => {
   return (
-    // <HStack>
-    //   <Sidedock />
-    //   <h1>Hello world!</h1>
-    // </HStack>
-    <TabEditor />
+    <Provider>
+      <Editor />
+    </Provider>
   );
 }
 
