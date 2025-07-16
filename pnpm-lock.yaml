@@ -11,12 +11,21 @@ importers:
       '@chakra-ui/react':
         specifier: ^3.22.0
         version: 3.22.0(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@codemirror/commands':
+        specifier: ^6.8.1
+        version: 6.8.1
       '@codemirror/lang-markdown':
         specifier: ^6.3.3
         version: 6.3.3
+      '@codemirror/language':
+        specifier: ^6.11.2
+        version: 6.11.2
       '@codemirror/language-data':
         specifier: ^6.5.1
         version: 6.5.1
+      '@codemirror/view':
+        specifier: ^6.38.1
+        version: 6.38.1
       '@emdashcodes/codemirror-markdown-canvas':
         specifier: github:emdashcodes/codemirror-markdown-canvas
         version: https://codeload.github.com/emdashcodes/codemirror-markdown-canvas/tar.gz/99efda39f950e47b4fd5c8f882cb8b83a26e881f
