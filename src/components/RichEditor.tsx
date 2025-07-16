@@ -7,15 +7,17 @@ import {
 } from "@handlewithcare/react-prosemirror";
 import { exampleSetup } from 'prosemirror-example-setup';
 import { useState } from "react";
-import 
 
-export function RichEditor() {
+const RichEditor: React.FC = () => {
   const [editorState, setEditorState] = useState(
     EditorState.create({
       schema,
       plugins: [
         reactKeys(),
-        ...exampleSetup({schema: schema})
+        ...exampleSetup({
+          schema: schema,
+          menuBar: false,
+        })
       ],
     })
   )
