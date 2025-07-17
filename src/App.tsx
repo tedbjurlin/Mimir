@@ -1,4 +1,3 @@
-import { HStack } from "@chakra-ui/react";
 import "./App.css";
 import "./App.css";
 import Editor from "./components/Editor";

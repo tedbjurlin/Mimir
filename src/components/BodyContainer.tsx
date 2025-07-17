@@ -1,22 +1,17 @@
-import { Box } from "@chakra-ui/react/box";
 import Sidedock from "./Sidedock";
-import Resizable from "./Resizable";
-import ResizablePanel from "./ResizablePanel";
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
 
 const BodyContainer: React.FC = () => {
 
   return (
-    <Resizable>
-      <ResizablePanel initialSize={200}>
-        <Box className="w-sceen h-screen" backgroundColor="blue"></Box>
-      </ResizablePanel>
-      <ResizablePanel initialSize={100} grow>
-        <Box className="w-screen h-screen" backgroundColor="green"></Box>
-      </ResizablePanel>
-      <ResizablePanel initialSize={200}>
-        <Box className="w-screen h-screen" backgroundColor="red"></Box>
-      </ResizablePanel>
-    </Resizable>
+    <Allotment defaultSizes={[100, 200]} minSize={70}>
+      <div className="bg-green-600 h-dvh" />
+      <div className="bg-red-600 h-dvh" />
+      <Allotment.Pane snap>
+        <div className="bg-blue-600 h-dvh" />
+      </Allotment.Pane>
+    </Allotment>
   );
 }
 

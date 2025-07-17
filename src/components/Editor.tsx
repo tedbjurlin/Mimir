@@ -1,7 +1,6 @@
 import ReactCodeMirror, { drawSelection, EditorView, highlightActiveLine, keymap, rectangularSelection } from "@uiw/react-codemirror";
 import { SetStateAction, useCallback, useState } from "react";
 import { basicDark } from "@uiw/codemirror-theme-basic";
-import { Box } from "@chakra-ui/react";
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
@@ -15,27 +14,25 @@ const Editor: React.FC = () => {
   }, []);
 
   return (
-    <Box h="100%">
-      <ReactCodeMirror
-        value={value}
-        theme={basicDark}
-        onChange={onChange}
-        height="100vh"
-        extensions={[
-          markdown({
-            base: markdownLanguage,
-            codeLanguages: languages
-          }),
-          EditorView.lineWrapping,
-          history(),
-          drawSelection(),
-          rectangularSelection(),
-          highlightActiveLine(),
-          indentOnInput(),
-          keymap.of([indentWithTab, ...defaultKeymap, ...historyKeymap])
-        ]}
-      />
-    </Box>
+    <ReactCodeMirror
+      value={value}
+      theme={basicDark}
+      onChange={onChange}
+      height="100vh"
+      extensions={[
+        markdown({
+          base: markdownLanguage,
+          codeLanguages: languages
+        }),
+        EditorView.lineWrapping,
+        history(),
+        drawSelection(),
+        rectangularSelection(),
+        highlightActiveLine(),
+        indentOnInput(),
+        keymap.of([indentWithTab, ...defaultKeymap, ...historyKeymap])
+      ]}
+    />
   )
 }
 
