@@ -4,9 +4,7 @@ import Editor from "./components/Editor";
 import BodyContainer from "./components/BodyContainer";
 
 const App: React.FC = () => {
-  return (
-    <BodyContainer />
-  );
-}
+  return <WorkspaceBody />;
+};
 
 export default App;

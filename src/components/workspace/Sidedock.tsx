@@ -7,6 +7,7 @@ import {
   LuNotebookPen,
   LuSearch,
 } from "react-icons/lu";
+import { WorkspaceContext } from "./WorkspaceContext";
 
 interface SidedockProps {
   className: string;
@@ -18,7 +19,16 @@ const Sidedock: React.FC<SidedockProps> = ({ className = "" }) => {
     throw new Error("Sidedock must be used within the WorkspaceContainer");
   }
 
-  return <div className={`side-dock ${className}`}></div>;
+  return (
+    <div className={`side-dock ${className}`}>
+      <LuAtom />
+      <LuBook />
+      <LuBookMarked />
+      <LuLightbulb />
+      <LuSearch />
+      <LuNotebookPen />
+    </div>
+  );
 };
 
 export default Sidedock;
