@@ -7,7 +7,7 @@ export type TWorkspaceContext = {
   isPanelCollapsed: (index: number) => boolean;
   resizePanel: (index: number, size: string) => void;
   registerPanel: (panelData: PanelData) => void;
-  registerResizer: () => number;
+  registerResizer: (setResizerLoc: (loc: number) => void) => number;
 };
 
 export type PanelData = {

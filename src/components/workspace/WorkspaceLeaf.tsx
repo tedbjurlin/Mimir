@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { WorkspaceContext, PanelData } from "./WorkspaceContext";
+import "./WorkspaceLeaf.css";
 
 interface WorkspaceLeafProps {
   initialSize?: number;
@@ -9,10 +10,10 @@ interface WorkspaceLeafProps {
 }
 
 const WorkspaceLeaf: React.FC<WorkspaceLeafProps> = ({
-  initialSize,
+  initialSize = 20,
   children,
   minSize = 10,
-  maxSize = 10,
+  maxSize = 30,
 }) => {
   const context = useContext(WorkspaceContext);
   if (context === null) {
