@@ -1,6 +1,6 @@
 .workspace-resizer {
   position: absolute;
-  width: 0.2em;
+  height: 100dvh;
 }
 
 .workspace-resizer:hover {
