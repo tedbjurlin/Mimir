@@ -20,6 +20,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-sql": "~2.3.0",
     "@uiw/codemirror-theme-basic": "^4.24.1",
     "@uiw/react-codemirror": "^4.24.1",
     "allotment": "^1.20.4",
