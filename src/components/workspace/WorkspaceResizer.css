@@ -1,9 +1,8 @@
-.workspace-resizer__handle {
+.workspace-resizer {
   position: absolute;
-  left: -0.1em;
   width: 0.2em;
 }
 
-.workspace-resizer__handle:hover {
+.workspace-resizer:hover {
   background-color: grey;
 }

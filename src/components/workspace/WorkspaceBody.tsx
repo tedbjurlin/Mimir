@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import {
   PanelData,
   TWorkspaceContext,
@@ -8,39 +8,67 @@ import WorkspaceContainer from "./WorkspaceContainer";
 import WorkspaceLeaf from "./WorkspaceLeaf";
 import WorkspaceResizer from "./WorkspaceResizer";
 import "./WorkspaceBody.css";
+import { initialWorkspaceState, workspaceReducer } from "./WorkspaceReducer";
+
+const leftWorkspaceLeaf: string = "left-workspace-leaf";
+const rightWorkspaceLeaf: string = "right-workspace-leaf";
 
 const WorkspaceBody: React.FC = () => {
-  const [panelSizeList, setPanelSizeList] = useState([]);
+  const [workspaceState, dispatch] = useReducer(
+    workspaceReducer,
+    initialWorkspaceState(20, 20, 0, {
+      left: {
+        minSize: 10,
+        maxSize: 30,
+      },
+      right: {
+        minSize: 10,
+        maxSize: 30,
+      },
+    })
+  );
 
-  const [workspaceContext, _setWorkspaceContext] = useState<TWorkspaceContext>({
-    collapsePanel: (index: number) => {},
-    expandPanel: (index: number) => {},
-    getPanelSize: (index: number) => {
-      return "";
-    },
-    isPanelCollapsed: (index: number) => {
-      return true;
-    },
-    resizePanel: (index: number, size: string) => {},
-    registerPanel: (panelData: PanelData) => {},
-    registerResizer: () => {
-      return 0;
-    },
-  });
+  function handleLeftResize(): void {}
+
+  function handleRightResize(): void {}
+
+  function handleToggleLeft(): void {
+    dispatch({
+      type: "toggle-collapse",
+      panel: "left",
+    });
+  }
+
+  function handleToggleRight(): void {
+    dispatch({
+      type: "toggle-collapse",
+      panel: "right",
+    });
+  }
 
   return (
     <div className="workspace-body">
-      <WorkspaceContext.Provider value={workspaceContext}>
-        <WorkspaceLeaf>
-          <div style={{ backgroundColor: "green", height: "100vh" }} />
-        </WorkspaceLeaf>
-        <WorkspaceResizer />
-        <WorkspaceContainer></WorkspaceContainer>
-        <WorkspaceResizer />
-        <WorkspaceLeaf>
-          <div style={{ backgroundColor: "green", height: "100vh" }} />
-        </WorkspaceLeaf>
-      </WorkspaceContext.Provider>
+      <WorkspaceLeaf state={workspaceState.left} id={leftWorkspaceLeaf}>
+        <div style={{ backgroundColor: "green", height: "100vh" }} />
+      </WorkspaceLeaf>
+      <WorkspaceResizer
+        state={workspaceState.left}
+        constraints={workspaceState.constraints.left}
+        aria_controls={leftWorkspaceLeaf}
+        onToggle={handleToggleLeft}
+        onResize={handleLeftResize}
+      />
+      <WorkspaceContainer></WorkspaceContainer>
+      <WorkspaceResizer
+        state={workspaceState.right}
+        constraints={workspaceState.constraints.right}
+        aria_controls={rightWorkspaceLeaf}
+        onToggle={handleToggleRight}
+        onResize={handleLeftResize}
+      />
+      <WorkspaceLeaf state={workspaceState.right} id={rightWorkspaceLeaf}>
+        <div style={{ backgroundColor: "green", height: "100vh" }} />
+      </WorkspaceLeaf>
     </div>
   );
 };
