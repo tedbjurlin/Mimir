@@ -1,13 +1,19 @@
-import { Provider } from "@/components/ui/provider";
+import "./App.css";
 import "./App.css";
 import Editor from "./components/Editor";
+import BodyContainer from "./components/BodyContainer";
+import WorkspaceBody from "./components/workspace/WorkspaceBody";
 
 const App: React.FC = () => {
   return (
-    <Provider>
-      <Editor />
-    </Provider>
+    <div
+      style={{
+        marginLeft: 100,
+      }}
+    >
+      <WorkspaceBody />
+    </div>
   );
-}
+};
 
 export default App;
