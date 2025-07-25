@@ -9,6 +9,8 @@ import WorkspaceLeaf from "./WorkspaceLeaf";
 import WorkspaceResizer from "./WorkspaceResizer";
 import "./WorkspaceBody.css";
 import { initialWorkspaceState, workspaceReducer } from "./WorkspaceReducer";
+import FileTree from "../file-tree/FileTree";
+import { testItems } from "../file-tree/File";
 
 const leftWorkspaceLeaf: string = "left-workspace-leaf";
 const rightWorkspaceLeaf: string = "right-workspace-leaf";
@@ -54,7 +56,7 @@ const WorkspaceBody: React.FC = () => {
   return (
     <div className="workspace-body" ref={ref}>
       <WorkspaceLeaf state={workspaceState.left} id={leftWorkspaceLeaf}>
-        <div style={{ backgroundColor: "green", height: "100vh" }} />
+        <FileTree items={testItems} />
       </WorkspaceLeaf>
       <WorkspaceResizer
         state={workspaceState.left}
