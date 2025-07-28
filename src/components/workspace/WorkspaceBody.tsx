@@ -11,6 +11,7 @@ import "./WorkspaceBody.css";
 import { initialWorkspaceState, workspaceReducer } from "./WorkspaceReducer";
 import FileTree from "../file-tree/FileTree";
 import { testItems } from "../file-tree/File";
+import TabContainer from "../tabs/TabContainer";
 
 const leftWorkspaceLeaf: string = "left-workspace-leaf";
 const rightWorkspaceLeaf: string = "right-workspace-leaf";
@@ -67,7 +68,9 @@ const WorkspaceBody: React.FC = () => {
         onResize={handleResize}
         panel="left"
       />
-      <WorkspaceContainer></WorkspaceContainer>
+      <WorkspaceContainer>
+        <TabContainer />
+      </WorkspaceContainer>
       <WorkspaceResizer
         state={workspaceState.right}
         workspaceOffset={offsetLeft}

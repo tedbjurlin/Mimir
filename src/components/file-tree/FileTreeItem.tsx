@@ -33,7 +33,7 @@ const FileTreeItem: React.FC<FileTreeItemProps> = ({
           </button>
         ) : (
           <div className="file-tree-item__leading-box">
-            <LuFile className="file-tree-item__icon" />
+            <LuFile className="file-tree-item__icon file-icon--text-level" />
           </div>
         )}
         <div className="file-tree-item__name">{item.name}</div>

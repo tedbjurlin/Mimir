@@ -40,20 +40,18 @@ export function tabsReducer(
   return prevState;
 }
 
-// export function initialWorkspaceState(
-//   initialLeftSize: number,
-//   initialRightSize: number,
-//   constraints: WorkspaceConstraints
-// ): WorkspaceState {
-//   return {
-//     left: {
-//       size: initialLeftSize,
-//       collapsed: false,
-//     },
-//     right: {
-//       size: initialRightSize,
-//       collapsed: true,
-//     },
-//     constraints,
-//   };
-// }
+export function createInitialTabState(): TabsState {
+  const uuid = crypto.randomUUID();
+  const tabMap: Map<`${string}-${string}-${string}-${string}-${string}`, TabState> = new Map([
+    [uuid, {
+      selected: true,
+      temporary: true,
+      title: 'New Tab'
+    }]
+  ])
+
+  return {
+    selected_tab: uuid,
+    tabs: tabMap,
+  }
+}
