@@ -5,17 +5,17 @@ import { useContext } from "react";
 import "./Tab.scss";
 
 type TabProps = {
-  uuid: `${string}-${string}-${string}-${string}-${string}`;
+  file_loc: string;
   state: TabState;
 };
 
-const Tab: React.FC<TabProps> = ({ uuid, state }) => {
+const Tab: React.FC<TabProps> = ({ file_loc, state }) => {
   const dispatch = useContext(TabsDispatchContext);
 
   function handleCloseTab(): void {
     dispatch!({
       type: "close",
-      uuid,
+      file_loc,
     });
   }
 

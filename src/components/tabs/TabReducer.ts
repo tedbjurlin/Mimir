@@ -5,15 +5,15 @@ export type TabState = {
 };
 
 export type TabsState = {
-  selected_tab: `${string}-${string}-${string}-${string}-${string}`,
-  temp_tab?: `${string}-${string}-${string}-${string}-${string}`,
-  tabs: Map<`${string}-${string}-${string}-${string}-${string}`, TabState>
+  selected_tab: string,
+  temp_tab?: string,
+  tabs: Map<string, TabState>
 }
 
 export type TabAction = {
   type: "select" | "activate" | "open" | "close";
-  uuid?: `${string}-${string}-${string}-${string}-${string}`;
-  file_url?: string;
+  file_loc: string;
+  file_name?: string;
 };
 
 export function tabsReducer(
@@ -22,18 +22,23 @@ export function tabsReducer(
 ): TabsState {
   switch (action.type) {
     case "select": {
-      if (typeof action.uuid == undefined) break;
-      if (action.uuid! == prevState.selected_tab) break;
-      if (!prevState.tabs.has(action.uuid!)) break;
+      if (action.file_loc == prevState.selected_tab) break;
+      if (!prevState.tabs.has(action.file_loc)) break;
       
-      prevState.tabs.set(action.uuid!, {
-        ...prevState.tabs.get(action.uuid!)!,
+      prevState.tabs.set(action.file_loc, {
+        ...prevState.tabs.get(action.file_loc)!,
         selected: false
       });
 
       return {
         ...prevState,
-        selected_tab: action.uuid!,
+        selected_tab: action.file_loc,
+      }
+    }
+    case "open": {
+      if (typeof action.file_name == undefined) break;
+      if (prevState.tabs.has(action.file_loc)) {
+
       }
     }
   }
@@ -42,7 +47,7 @@ export function tabsReducer(
 
 export function createInitialTabState(): TabsState {
   const uuid = crypto.randomUUID();
-  const tabMap: Map<`${string}-${string}-${string}-${string}-${string}`, TabState> = new Map([
+  const tabMap: Map<string, TabState> = new Map([
     [uuid, {
       selected: true,
       temporary: true,

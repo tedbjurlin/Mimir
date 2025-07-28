@@ -1,7 +1,8 @@
 import { LuChevronRight, LuFile } from "react-icons/lu";
 import { FileListItem } from "./File";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./FileTreeItem.scss";
+import { TabsDispatchContext } from "../tabs/TabContext";
 
 interface FileTreeItemProps {
   item: FileListItem;
@@ -13,10 +14,17 @@ const FileTreeItem: React.FC<FileTreeItemProps> = ({
   item,
 }) => {
   const [expanded, setExpanded] = useState(true);
+  const tabsDispatch = useContext(TabsDispatchContext);
 
   const handleClickItemCard = () => {
     if (item.isDirectory) {
       setExpanded(!expanded);
+    } else {
+      tabsDispatch!({
+        type: "open",
+        file_loc: item.file_location,
+        file_name: item.name,
+      });
     }
   };
 

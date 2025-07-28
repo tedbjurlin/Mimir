@@ -9,8 +9,8 @@ type TabBarProps = {
 const TabBar: React.FC<TabBarProps> = ({ children }) => {
   const tabsState = useContext(TabsContext);
 
-  const tabs = tabsState?.tabs.entries().map(([uuid, tabState]) => {
-    return <Tab key={uuid} uuid={uuid} state={tabState} />;
+  const tabs = tabsState?.tabs.entries().map(([file_loc, tabState]) => {
+    return <Tab key={file_loc} file_loc={file_loc} state={tabState} />;
   });
 
   return (
