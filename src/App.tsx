@@ -2,6 +2,7 @@ import "./App.scss";
 import Editor from "./components/Editor";
 import BodyContainer from "./components/BodyContainer";
 import WorkspaceBody from "./components/workspace/WorkspaceBody";
+import { TabsProvider } from "./components/tabs/TabContext";
 
 const App: React.FC = () => {
   return (
@@ -10,7 +11,9 @@ const App: React.FC = () => {
         marginLeft: 100,
       }}
     >
-      <WorkspaceBody />
+      <TabsProvider>
+        <WorkspaceBody />
+      </TabsProvider>
     </div>
   );
 };
