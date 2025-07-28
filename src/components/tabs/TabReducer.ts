@@ -38,7 +38,32 @@ export function tabsReducer(
     case "open": {
       if (typeof action.file_name == undefined) break;
       if (prevState.tabs.has(action.file_loc)) {
+        return tabsReducer(prevState, {
+          type: "select",
+          file_loc: action.file_loc,
+        })
+      } else {
+        const newTab: TabState = {
+          selected: true,
+          temporary: true,
+          title: action.file_name!
+        }
 
+        // Not the behaviour I want. I would like new temp
+        // tabs to replace in place, not at the end of the list.
+        // As it stands, I would need to track tabs with uuids,
+        // so that I could store them independently of contents.
+        // This would need a more effective lookup method to find
+        // tabs to file name.
+        if (typeof prevState.temp_tab != undefined) {
+          prevState.tabs.delete(prevState.temp_tab!);
+        }
+        prevState.tabs.set(action.file_loc, newTab)
+        return {
+          selected_tab: action.file_loc,
+          temp_tab: action.file_loc,
+          tabs: prevState.tabs
+        }
       }
     }
   }
