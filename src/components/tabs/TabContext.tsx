@@ -5,7 +5,7 @@ import {
   useReducer,
 } from "react";
 import {
-  createInitialTabState,
+  createInitialTabsState,
   TabAction,
   tabsReducer,
   TabsState,
@@ -20,10 +20,10 @@ export const TabsDispatchContext = createContext<ActionDispatch<
 export const TabsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [tabsState, dispatch] = useReducer(
     tabsReducer,
-    createInitialTabState()
+    createInitialTabsState()
   );
 
-  debug(`${tabsState.tabs.size}`);
+  debug(`${tabsState.tabs.length}`);
 
   return (
     <TabsContext value={tabsState}>

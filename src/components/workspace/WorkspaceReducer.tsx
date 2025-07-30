@@ -40,7 +40,7 @@ export function workspaceReducer(
       };
     }
     case "resize": {
-      if (typeof action.delta !== undefined) {
+      if (typeof action.delta !== "undefined") {
         if (action.panel == "left") {
           var newSize;
 

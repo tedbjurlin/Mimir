@@ -13,9 +13,9 @@ const TabBar: React.FC<TabBarProps> = ({ children }) => {
 
   // debug(`${tabsState?.tabs.size}`);
 
-  const tabs = tabsState?.tabs.entries().map(([file_loc, tabState]) => {
-    debug(file_loc);
-    return <Tab key={file_loc} file_loc={file_loc} state={tabState} />;
+  const tabs = tabsState?.tabs.map((tabState) => {
+    debug(tabState.content.key);
+    return <Tab key={tabState.content.key} state={tabState} />;
   });
 
   return (

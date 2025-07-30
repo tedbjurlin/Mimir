@@ -5,17 +5,16 @@ import { useContext } from "react";
 import "./Tab.scss";
 
 type TabProps = {
-  file_loc: string;
   state: TabState;
 };
 
-const Tab: React.FC<TabProps> = ({ file_loc, state }) => {
+const Tab: React.FC<TabProps> = ({ state }) => {
   const dispatch = useContext(TabsDispatchContext);
 
   function handleCloseTab(): void {
     dispatch!({
       type: "close",
-      file_loc,
+      target_key: state.content.key,
     });
   }
 
@@ -24,7 +23,7 @@ const Tab: React.FC<TabProps> = ({ file_loc, state }) => {
       className={`tab ${state.selected ? "tab--selected" : "tab--unselected"}`}
     >
       <LuFile className="tab__icon file-icon--text-level" />
-      {state.temporary ? <i>{state.title}</i> : state.title}
+      {state.temporary ? <i>{state.content.name}</i> : state.content.name}
       <button
         className="tab__close-button icon-button--text-level"
         onClick={handleCloseTab}

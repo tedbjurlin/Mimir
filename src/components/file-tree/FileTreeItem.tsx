@@ -3,6 +3,7 @@ import { FileListItem } from "./File";
 import { useContext, useState } from "react";
 import "./FileTreeItem.scss";
 import { TabsDispatchContext } from "../tabs/TabContext";
+import { TextFileType } from "../tabs/TabReducer";
 
 interface FileTreeItemProps {
   item: FileListItem;
@@ -22,8 +23,12 @@ const FileTreeItem: React.FC<FileTreeItemProps> = ({
     } else {
       tabsDispatch!({
         type: "open",
-        file_loc: item.file_location,
-        file_name: item.name,
+        content: {
+          key: item.file_location,
+          name: item.name,
+          file_loc: item.file_location,
+          filetype: TextFileType.PlainText,
+        },
       });
     }
   };

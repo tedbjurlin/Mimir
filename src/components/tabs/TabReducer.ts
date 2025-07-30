@@ -1,3 +1,5 @@
+import { debug } from "@tauri-apps/plugin-log";
+
 export type TabState = {
   selected: boolean;
   temporary: boolean;
@@ -24,7 +26,7 @@ export type EmptyTab = {}
 
 export enum TextFileType {
   PlainText,
-  MarkDown,
+  Markdown,
 }
 
 export type TabsState = {
@@ -43,9 +45,10 @@ export function tabsReducer(
   prevState: TabsState,
   action: TabAction
 ): TabsState {
+  var newTabs = [...prevState.tabs];
   switch (action.type) {
     case "select": {
-      if (typeof action.target_key == undefined) break;
+      if (typeof action.target_key === "undefined") break;
       if (action.target_key == prevState.tabs[prevState.selected_tab].content.key) break;
       const tab = findTabByKey(action.target_key!, prevState.tabs);
 
@@ -55,18 +58,19 @@ export function tabsReducer(
           selected: true,
         }
 
-        prevState.tabs[tab[0]] = newTab;
+        newTabs[tab[0]] = newTab;
 
         return {
           ...prevState,
           selected_tab: tab[0],
-          tabs: prevState.tabs,
+          tabs: newTabs,
         }
       }
       break;
     }
     case "open": {
-      if (typeof action.content == undefined) break;
+      if (typeof action.content === "undefined") break;
+      debug(`${action.content.key}`);
       const tab = findTabByKey(action.content!.key, prevState.tabs);
 
       if (tab != null) {
@@ -81,47 +85,52 @@ export function tabsReducer(
           content: action.content!
         }
 
-        if (typeof prevState.temp_tab != undefined) {
-          if (prevTempTab != null) {
-            prevState.tabs[prevTempTab[0]] = newTab;
-          } else {
-            prevState.tabs
-          }
+        var newTabLoc;
+
+        if (typeof prevState.temp_tab !== "undefined") {
+            newTabs[prevState.temp_tab!] = newTab;
+            newTabLoc = prevState.temp_tab!;
         } else {
-          prevState.tabs.concat(newTab);
+          newTabs.concat(newTab);
+          newTabLoc = prevState.tabs.length;
         }
 
         return {
-          selected_tab: action.file_loc,
-          temp_tab: action.file_loc,
-          tabs: copyMap(prevState.tabs)
+          selected_tab: newTabLoc,
+          temp_tab: newTabLoc,
+          tabs: newTabs
         }
       }
     }
     case "close": {
-      if (!prevState.tabs.has(action.file_loc)) break;
+      if (typeof action.target_key === "undefined") break;
+      const tab = findTabByKey(action.target_key!, prevState.tabs);
 
-      prevState.tabs.delete(action.file_loc);
-
-      var new_selected_tab;
-      if (prevState.selected_tab == action.file_loc) {
-        if (prevState.tabs.size > 0) {
-          [new_selected_tab] = prevState.tabs.keys();
-          prevState.tabs.set(new_selected_tab, {
-            ...prevState.tabs.get(new_selected_tab)!,
-            selected: true,
-          })
-        } else {
-          new_selected_tab = ""
-        }
+      if (tab == null) {
+        break;
       } else {
-        new_selected_tab = prevState.selected_tab;
-      }
-
-      return {
-        ...prevState,
-        selected_tab: new_selected_tab,
-        tabs: copyMap(prevState.tabs),
+        newTabs.splice(tab[0])
+        
+        var new_selected_tab;
+        if (prevState.selected_tab == tab[0]) {
+          if (newTabs.length > 0) {
+            new_selected_tab = 0;
+            newTabs[new_selected_tab] = {
+              ...newTabs[new_selected_tab],
+              selected: true,
+            }
+          } else {
+            return createInitialTabsState();
+          }
+        } else {
+          new_selected_tab = prevState.selected_tab;
+        }
+  
+        return {
+          temp_tab: prevState.temp_tab == tab[0] ? undefined : prevState.temp_tab,
+          selected_tab: new_selected_tab,
+          tabs: newTabs,
+        }
       }
     }
   }
@@ -137,7 +146,7 @@ function findTabByKey(key: TabKey, tabs: TabState[]): [number, TabState] | null 
   return null;
 }
 
-export function createInitialTabState(): TabsState {
+export function createInitialTabsState(): TabsState {
   const uuid = crypto.randomUUID();
   const tabList : TabState[] = [
     {
@@ -151,8 +160,8 @@ export function createInitialTabState(): TabsState {
   ];
 
   return {
-    selected_tab: uuid,
-    temp_tab: uuid,
+    selected_tab: 0,
+    temp_tab: 0,
     tabs: tabList,
   }
 }
