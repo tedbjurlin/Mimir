@@ -11,7 +11,7 @@ export const testItems: FileListItem[] = [
     name: "File.ts",
     isDirectory: false,
     filetype: "typescript",
-    file_location: "",
+    file_location: "File.ts",
   },
   {
     name: "src",
@@ -22,13 +22,13 @@ export const testItems: FileListItem[] = [
         name: "Sidedock.tsx",
         isDirectory: false,
         filetype: "tsx",
-        file_location: "",
+        file_location: "src/Sidedock.tsx",
       },
       {
         name: "Hello_World.docx",
         isDirectory: false,
         filetype: "Microsoft Word Document",
-        file_location: "",
+        file_location: "src/Hello_World.docx",
       }
     ]
   }

@@ -10,6 +10,7 @@ import {
   tabsReducer,
   TabsState,
 } from "./TabReducer";
+import { debug } from "@tauri-apps/plugin-log";
 
 export const TabsContext = createContext<TabsState | null>(null);
 export const TabsDispatchContext = createContext<ActionDispatch<
@@ -21,6 +22,8 @@ export const TabsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     tabsReducer,
     createInitialTabState()
   );
+
+  debug(`${tabsState.tabs.size}`);
 
   return (
     <TabsContext value={tabsState}>

@@ -1,19 +1,42 @@
 export type TabState = {
   selected: boolean;
   temporary: boolean;
-  title: string;
+  content: TabContent;
 };
 
+// all members must at least contain a field called name
+export type TabContent = TabContentBase & (TextFile | EmptyTab);
+
+export type TabContentBase = {
+  key: TabKey;
+  name: string;
+}
+
+export type TabKey = string;
+
+export type TextFile = {
+  name: string;
+  file_loc: string;
+  filetype: TextFileType;
+}
+
+export type EmptyTab = {}
+
+export enum TextFileType {
+  PlainText,
+  MarkDown,
+}
+
 export type TabsState = {
-  selected_tab: string,
-  temp_tab?: string,
-  tabs: Map<string, TabState>
+  selected_tab: number,
+  temp_tab?: number,
+  tabs: TabState[];
 }
 
 export type TabAction = {
   type: "select" | "activate" | "open" | "close";
-  file_loc: string;
-  file_name?: string;
+  target_key?: TabKey;
+  content?: TabContent;
 };
 
 export function tabsReducer(
@@ -22,66 +45,114 @@ export function tabsReducer(
 ): TabsState {
   switch (action.type) {
     case "select": {
-      if (action.file_loc == prevState.selected_tab) break;
-      if (!prevState.tabs.has(action.file_loc)) break;
-      
-      prevState.tabs.set(action.file_loc, {
-        ...prevState.tabs.get(action.file_loc)!,
-        selected: false
-      });
+      if (typeof action.target_key == undefined) break;
+      if (action.target_key == prevState.tabs[prevState.selected_tab].content.key) break;
+      const tab = findTabByKey(action.target_key!, prevState.tabs);
 
-      return {
-        ...prevState,
-        selected_tab: action.file_loc,
+      if (tab != null) {
+        const newTab: TabState = {
+          ...tab[1],
+          selected: true,
+        }
+
+        prevState.tabs[tab[0]] = newTab;
+
+        return {
+          ...prevState,
+          selected_tab: tab[0],
+          tabs: prevState.tabs,
+        }
       }
+      break;
     }
     case "open": {
-      if (typeof action.file_name == undefined) break;
-      if (prevState.tabs.has(action.file_loc)) {
+      if (typeof action.content == undefined) break;
+      const tab = findTabByKey(action.content!.key, prevState.tabs);
+
+      if (tab != null) {
         return tabsReducer(prevState, {
           type: "select",
-          file_loc: action.file_loc,
+          target_key: tab[1].content.key,
         })
       } else {
         const newTab: TabState = {
           selected: true,
           temporary: true,
-          title: action.file_name!
+          content: action.content!
         }
 
-        // Not the behaviour I want. I would like new temp
-        // tabs to replace in place, not at the end of the list.
-        // As it stands, I would need to track tabs with uuids,
-        // so that I could store them independently of contents.
-        // This would need a more effective lookup method to find
-        // tabs to file name.
         if (typeof prevState.temp_tab != undefined) {
-          prevState.tabs.delete(prevState.temp_tab!);
+          if (prevTempTab != null) {
+            prevState.tabs[prevTempTab[0]] = newTab;
+          } else {
+            prevState.tabs
+          }
+        } else {
+          prevState.tabs.concat(newTab);
         }
-        prevState.tabs.set(action.file_loc, newTab)
+
         return {
           selected_tab: action.file_loc,
           temp_tab: action.file_loc,
-          tabs: prevState.tabs
+          tabs: copyMap(prevState.tabs)
         }
+      }
+    }
+    case "close": {
+      if (!prevState.tabs.has(action.file_loc)) break;
+
+      prevState.tabs.delete(action.file_loc);
+
+      var new_selected_tab;
+      if (prevState.selected_tab == action.file_loc) {
+        if (prevState.tabs.size > 0) {
+          [new_selected_tab] = prevState.tabs.keys();
+          prevState.tabs.set(new_selected_tab, {
+            ...prevState.tabs.get(new_selected_tab)!,
+            selected: true,
+          })
+        } else {
+          new_selected_tab = ""
+        }
+      } else {
+        new_selected_tab = prevState.selected_tab;
+      }
+
+      return {
+        ...prevState,
+        selected_tab: new_selected_tab,
+        tabs: copyMap(prevState.tabs),
       }
     }
   }
   return prevState;
 }
 
+function findTabByKey(key: TabKey, tabs: TabState[]): [number, TabState] | null {
+  for (let i = 0; i < tabs.length; i++) {
+    if (tabs[i].content.key == key) {
+      return [i, tabs[i]]
+    }
+  }
+  return null;
+}
+
 export function createInitialTabState(): TabsState {
   const uuid = crypto.randomUUID();
-  const tabMap: Map<string, TabState> = new Map([
-    [uuid, {
+  const tabList : TabState[] = [
+    {
       selected: true,
       temporary: true,
-      title: 'New Tab'
-    }]
-  ])
+      content: {
+        name: 'New Tab',
+        key: uuid,
+      }
+    }
+  ];
 
   return {
     selected_tab: uuid,
-    tabs: tabMap,
+    temp_tab: uuid,
+    tabs: tabList,
   }
 }
