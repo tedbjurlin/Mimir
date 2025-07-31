@@ -76,9 +76,10 @@ export function tabsReducer(
       break;
     }
     case "activate": {
-      debug(`${prevState.temp_tab}`)
       if (typeof prevState.temp_tab === "undefined") break;
       const tab = newTabs[prevState.temp_tab];
+
+      if (tab.content.key == 'new-tab') break;
       
       debug(`activated tab: ${tab.content.key}`)
 
@@ -196,14 +197,13 @@ function findTabByKey(key: TabKey, tabs: TabState[]): [number, TabState] | null 
 }
 
 export function createInitialTabsState(): TabsState {
-  const uuid = crypto.randomUUID();
   const tabList : TabState[] = [
     {
       selected: true,
       temporary: true,
       content: {
         name: 'New Tab',
-        key: uuid,
+        key: 'new-tab',
       }
     }
   ];
