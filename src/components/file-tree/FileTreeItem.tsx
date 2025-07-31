@@ -28,6 +28,7 @@ const FileTreeItem: React.FC<FileTreeItemProps> = ({
           name: item.name,
           file_loc: item.file_location,
           filetype: TextFileType.PlainText,
+          contents: "",
         },
       });
     }

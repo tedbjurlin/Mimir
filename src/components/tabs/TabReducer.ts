@@ -17,9 +17,9 @@ export type TabContentBase = {
 export type TabKey = string;
 
 export type TextFile = {
-  name: string;
   file_loc: string;
   filetype: TextFileType;
+  contents: string;
 }
 
 export type EmptyTab = {}
@@ -36,7 +36,7 @@ export type TabsState = {
 }
 
 export type TabAction = {
-  type: "select" | "activate" | "open" | "close";
+  type: "select" | "activate" | "open" | "close" | "update-content";
   target_key?: TabKey;
   content?: TabContent;
 };
@@ -181,6 +181,19 @@ export function tabsReducer(
           selected_tab: new_selected_tab,
           tabs: newTabs,
         }
+      }
+    }
+    case "update-content": {
+      if (typeof action.content === "undefined") break;
+
+      newTabs[prevState.selected_tab] = {
+        ...newTabs[prevState.selected_tab],
+        content: action.content,
+      }
+
+      return {
+        ...prevState,
+        tabs: newTabs,
       }
     }
   }

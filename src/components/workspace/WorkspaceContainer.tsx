@@ -9,7 +9,7 @@ const WorkspaceContainer: React.FC<WorkspaceContainerProps> = ({
     <div
       className="workspace-container"
       style={{
-        flexGrow: 1,
+        flex: "1 1 auto",
       }}
     >
       {children}

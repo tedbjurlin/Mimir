@@ -4,8 +4,9 @@ import ReactCodeMirror, {
   highlightActiveLine,
   keymap,
   rectangularSelection,
+  ViewUpdate,
 } from "@uiw/react-codemirror";
-import { SetStateAction, useCallback, useState } from "react";
+import { SetStateAction, useCallback, useContext, useState } from "react";
 import { basicDark } from "@uiw/codemirror-theme-basic";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
@@ -16,23 +17,32 @@ import {
   indentWithTab,
 } from "@codemirror/commands";
 import { indentOnInput } from "@codemirror/language";
+import "./Editor.scss";
 
-const Editor: React.FC = () => {
-  const [value, setValue] = useState("console.log('hello world!');");
-  const onChange = useCallback(
-    (val: SetStateAction<string>, viewUpdate: any) => {
-      //console.log('val:', val);
-      setValue(val);
-    },
-    []
-  );
+export type EditorProps = {
+  contents: string;
+  onChange: (value: string, viewUpdate: ViewUpdate) => void;
+};
+
+const Editor: React.FC<EditorProps> = ({ contents, onChange }) => {
+  // const onChange = useCallback(
+  //   (val: SetStateAction<string>, viewUpdate: any) => {
+  //     //console.log('val:', val);
+  //     dispatch!({
+  //       type: "update-content",
+  //     });
+  //   },
+  //   []
+  // );
 
   return (
     <ReactCodeMirror
-      value={value}
+      value={contents}
       theme={basicDark}
       onChange={onChange}
-      height="100vh"
+      style={{
+        flex: "1 1 auto",
+      }}
       extensions={[
         markdown({
           base: markdownLanguage,
