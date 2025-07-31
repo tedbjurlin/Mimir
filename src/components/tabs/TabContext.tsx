@@ -23,8 +23,6 @@ export const TabsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     createInitialTabsState()
   );
 
-  debug(`${tabsState.tabs.length}`);
-
   return (
     <TabsContext value={tabsState}>
       <TabsDispatchContext value={dispatch}>{children}</TabsDispatchContext>

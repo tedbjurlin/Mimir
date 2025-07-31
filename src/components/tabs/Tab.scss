@@ -6,8 +6,16 @@
 
   height: 2rem;
 
-  border-left: 1px black;
+  border-left: 1px solid black;
   margin-left: -1px;
 
   white-space: nowrap;
+
+  &--unselected {
+    border-bottom: 1px solid black;
+  }
+
+  &--selected {
+    border-bottom: 0px;
+  }
 }

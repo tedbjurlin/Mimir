@@ -11,10 +11,7 @@ type TabBarProps = {
 const TabBar: React.FC<TabBarProps> = ({ children }) => {
   const tabsState = useContext(TabsContext);
 
-  // debug(`${tabsState?.tabs.size}`);
-
   const tabs = tabsState?.tabs.map((tabState) => {
-    debug(tabState.content.key);
     return <Tab key={tabState.content.key} state={tabState} />;
   });
 
