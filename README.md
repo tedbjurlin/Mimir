@@ -3,6 +3,9 @@
 > [!Warning]
 > This project is a first draft. It is entirely likely that I will start over from scratch several times as Mimir develops.
 
+> [!Info]
+> This is version two. In v1 I built most of the main components like window splitters and tabs myself, to get an idea of how they function. Now that I am comfortable with the concepts involved, I am using Ark UI for these components so that I can have access to accessibility features and other things that would have required re-inventing the wheel.
+
 Mimir is an opinionated note-taking and writing application designed to seamlessly merge the processes of learning and creating. By integrating writing, from small ideas to academic papers, into a web of personal notes and references, Mimir empowers you to understand how everything you think about is connected.
 
 This application is inspired by knowledge management systems like Obsidian and Zettelkasten, but extends them by enabling the user to link their notes to their long form writing.
