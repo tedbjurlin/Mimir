@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+body,
+html {
+  width: 100%;
+  margin: 0;
+}
+
+body {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+html,
+body,
+#root {
+  height: 100vh;
+}
+
+.file-icon {
+  &--text-level {
+    height: 0.8rem;
+  }
+}
+
+.icon-button {
+  &--text-level {
+    height: 1rem;
+    width: 1rem;
+
+    &:hover {
+      background-color: black;
+      border-radius: 0.1rem;
+      color: white;
+    }
+  }
+
+  &__icon--text-level {
+    height: 0.8rem;
+  }
+}
