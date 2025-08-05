@@ -5,6 +5,7 @@ import {
   SearchIcon,
   SettingsIcon,
 } from "lucide-react";
+import "@/style/SideDock.scss";
 
 type SideDockProps = {
   left_panel: string;
@@ -14,7 +15,7 @@ type SideDockProps = {
 const SideDock: React.FC<SideDockProps> = ({ left_panel, set_left_panel }) => {
   return (
     <div className="side-dock">
-      <div className="upper-buttons">
+      <div className="button-group">
         <button
           className={`icon-button side-dock__note-button ${
             left_panel === "thought" && "selected"
@@ -48,7 +49,7 @@ const SideDock: React.FC<SideDockProps> = ({ left_panel, set_left_panel }) => {
           <SearchIcon className="icon-button__icon side-dock__icon" />
         </button>
       </div>
-      <div className="lower-buttons">
+      <div className="button-group">
         <button className="icon-button side-dock__button">
           <SettingsIcon className="icon-button__icon side-dock__icon" />
         </button>

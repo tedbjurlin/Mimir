@@ -1,5 +1,6 @@
 import { EyeClosed, Maximize, Minimize, X } from "lucide-react";
 import TitleBarMenu from "./title-bar-components/TitleBarMenu";
+import "@/style/TitleBar.scss";
 
 const TitleBar: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const TitleBar: React.FC = () => {
         <EyeClosed className="title-bar__logo" />
         <TitleBarMenu />
       </div>
-      Title
+      <div className="title-bar__title">Title</div>
       <div className="title-bar__right-group">
         <button className="icon-button title-bar__button title-bar__minimize-button">
           <Minimize className="title-bar__minimize-icon" />
