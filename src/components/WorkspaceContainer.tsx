@@ -1,5 +1,6 @@
 import { Splitter } from "@ark-ui/react";
 import WorkspaceBody from "./WorkspaceBody";
+import NotesView from "./NotesView";
 
 const WorkspaceContainer: React.FC = () => {
   return (
@@ -11,7 +12,9 @@ const WorkspaceContainer: React.FC = () => {
           { id: "right-leaf", collapsible: true, minSize: 10 },
         ]}
       >
-        <Splitter.Panel id="left-leaf">Left</Splitter.Panel>
+        <Splitter.Panel id="left-leaf">
+          <NotesView />
+        </Splitter.Panel>
         <Splitter.ResizeTrigger
           id="left-leaf:workspace-body"
           aria-label="Resize"
