@@ -6,20 +6,45 @@ import {
   SettingsIcon,
 } from "lucide-react";
 
-const SideDock: React.FC = () => {
+type SideDockProps = {
+  left_panel: string;
+  set_left_panel: (left_panel: string) => void;
+};
+
+const SideDock: React.FC<SideDockProps> = ({ left_panel, set_left_panel }) => {
   return (
     <div className="side-dock">
       <div className="upper-buttons">
-        <button className="icon-button side-dock__note-button">
+        <button
+          className={`icon-button side-dock__note-button ${
+            left_panel === "thought" && "selected"
+          }`}
+          onClick={() => set_left_panel("thought")}
+        >
           <BrainIcon className="icon-button__icon side-dock__note-icon" />
         </button>
-        <button className="icon-button side-dock__note-button">
+        <button
+          className={`icon-button side-dock__note-button ${
+            left_panel === "concept" && "selected"
+          }`}
+          onClick={() => set_left_panel("concept")}
+        >
           <AtomIcon className="icon-button__icon side-dock__note-icon" />
         </button>
-        <button className="icon-button side-dock__note-button">
+        <button
+          className={`icon-button side-dock__note-button ${
+            left_panel === "reference" && "selected"
+          }`}
+          onClick={() => set_left_panel("reference")}
+        >
           <BookMarkedIcon className="icon-button__icon side-dock__note-icon" />
         </button>
-        <button className="icon-button side-dock__button">
+        <button
+          className={`icon-button side-dock__note-button ${
+            left_panel === "search" && "selected"
+          }`}
+          onClick={() => set_left_panel("search")}
+        >
           <SearchIcon className="icon-button__icon side-dock__icon" />
         </button>
       </div>
