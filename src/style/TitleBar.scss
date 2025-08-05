@@ -3,6 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex: 0 0 auto;
 
   &__title {
     white-space: nowrap;
