@@ -5,6 +5,8 @@ import WorkspaceContainer from "./components/WorkspaceContainer";
 import AppStateProvider from "./state/AppStateContext";
 
 const App: React.FC = () => {
+  useEffect(() => {});
+
   useEffect(() => {
     document.body.setAttribute("data-theme", "light");
 

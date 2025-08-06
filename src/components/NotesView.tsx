@@ -1,32 +1,27 @@
-import {
-  createTreeCollection,
-  Progress,
-  TreeCollection,
-  TreeView,
-} from "@ark-ui/react";
+import { createTreeCollection, TreeCollection, TreeView } from "@ark-ui/react";
 import { readDir } from "@tauri-apps/plugin-fs";
 import { join } from "@tauri-apps/api/path";
-import {
-  CheckSquareIcon,
-  ChevronRightIcon,
-  FileIcon,
-  FolderIcon,
-} from "lucide-react";
-import { JSX, useEffect, useState } from "react";
+import { ChevronRightIcon, FileIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { debug } from "@tauri-apps/plugin-log";
 
 type NotesViewProps = {
   title: string;
-  directory: string;
+  directory?: string;
+  style?: React.CSSProperties;
 };
 
-const NotesView: React.FC<NotesViewProps> = ({ title, directory }) => {
+const NotesView: React.FC<NotesViewProps> = ({ title, directory, style }) => {
   const [files, setFiles] = useState<TreeCollection<Node> | undefined>(
     undefined
   );
 
   useEffect(() => {
     async function getNodes(name: string, path: string): Promise<Node> {
+      debug(`test`);
       const contents = await readDir(path);
+
+      debug(`${contents.length}`);
 
       const node: Node = {
         id: path,
@@ -39,6 +34,7 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory }) => {
         if (entry.isSymlink) return;
         const newPath = await join(path, entry.name);
         if (entry.isDirectory) {
+          debug(entry.name);
           node.children!.push(
             await getNodes(entry.name, await join(path, entry.name))
           );
@@ -55,10 +51,14 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory }) => {
     }
 
     async function getFiles() {
+      if (typeof directory === "undefined") return;
+
+      debug(`${title}`);
+      const nodes = await getNodes(title, directory!);
       const files = createTreeCollection<Node>({
         nodeToString: (node) => node.name,
         nodeToValue: (node) => node.id,
-        rootNode: await getNodes(title, directory),
+        rootNode: nodes,
       });
 
       setFiles(files);
@@ -67,31 +67,38 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory }) => {
     getFiles();
   }, [directory]);
 
-  return typeof files === "undefined" ? (
-    <Progress.Root
-      translations={{
-        value({ value, max }) {
-          if (value === null) return "Loading...";
-          return `${value} of ${max} files loaded`;
-        },
-      }}
-    >
-      <Progress.Label>Loading Files</Progress.Label>
-      <Progress.ValueText />
-      <Progress.Circle>
-        <Progress.CircleTrack />
-        <Progress.CircleRange />
-      </Progress.Circle>
-    </Progress.Root>
-  ) : (
-    <TreeView.Root collection={files}>
-      <TreeView.Label>{files.rootNode.name}</TreeView.Label>
-      <TreeView.Tree>
-        {files.rootNode.children?.map((node, index) => (
-          <TreeNode key={node.id} node={node} indexPath={[index]} />
-        ))}
-      </TreeView.Tree>
-    </TreeView.Root>
+  return (
+    <div className="notes-list-view" style={style}>
+      {typeof files === "undefined" ? (
+        <>Loading</>
+      ) : (
+        // <Progress.Root
+        //   defaultValue={null}
+        //   style={style}
+        //   translations={{
+        //     value({ value, max }) {
+        //       if (value === null) return "Loading...";
+        //       return `${value} of ${max} files loaded`;
+        //     },
+        //   }}
+        // >
+        //   <Progress.Label>Loading Files</Progress.Label>
+        //   <Progress.ValueText />
+        //   <Progress.Circle>
+        //     <Progress.CircleTrack />
+        //     <Progress.CircleRange />
+        //   </Progress.Circle>
+        // </Progress.Root>
+        <TreeView.Root collection={files}>
+          <TreeView.Label>{files.rootNode.name}</TreeView.Label>
+          <TreeView.Tree>
+            {files.rootNode.children?.map((node, index) => (
+              <TreeNode key={node.id} node={node} indexPath={[index]} />
+            ))}
+          </TreeView.Tree>
+        </TreeView.Root>
+      )}
+    </div>
   );
 };
 
