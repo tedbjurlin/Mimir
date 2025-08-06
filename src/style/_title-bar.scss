@@ -4,6 +4,7 @@
   justify-content: space-between;
   align-items: center;
   flex: 0 0 auto;
+  height: 2.2rem;
 
   &__title {
     white-space: nowrap;
@@ -22,5 +23,9 @@
 
   &__right-group {
     justify-content: end;
+  }
+
+  &__logo {
+    width: 3rem;
   }
 }

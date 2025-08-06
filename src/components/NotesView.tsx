@@ -26,12 +26,10 @@ const TreeNode = (props: TreeView.NodeProviderProps<Node>) => {
       {node.children ? (
         <TreeView.Branch>
           <TreeView.BranchControl>
-            <TreeView.BranchText>
-              <FolderIcon /> {node.name}
-            </TreeView.BranchText>
             <TreeView.BranchIndicator>
-              <ChevronRightIcon />
+              <ChevronRightIcon className="tree-icon" />
             </TreeView.BranchIndicator>
+            <TreeView.BranchText>{node.name}</TreeView.BranchText>
           </TreeView.BranchControl>
           <TreeView.BranchContent>
             <TreeView.BranchIndentGuide />
@@ -46,11 +44,8 @@ const TreeNode = (props: TreeView.NodeProviderProps<Node>) => {
         </TreeView.Branch>
       ) : (
         <TreeView.Item>
-          <TreeView.ItemIndicator>
-            <CheckSquareIcon />
-          </TreeView.ItemIndicator>
           <TreeView.ItemText>
-            <FileIcon />
+            <FileIcon className="tree-icon" />
             {node.name}
           </TreeView.ItemText>
         </TreeView.Item>
