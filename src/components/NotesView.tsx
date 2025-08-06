@@ -1,17 +1,93 @@
-import { createTreeCollection, TreeView } from "@ark-ui/react";
+import {
+  createTreeCollection,
+  Progress,
+  TreeCollection,
+  TreeView,
+} from "@ark-ui/react";
+import { readDir } from "@tauri-apps/plugin-fs";
+import { join } from "@tauri-apps/api/path";
 import {
   CheckSquareIcon,
   ChevronRightIcon,
   FileIcon,
   FolderIcon,
 } from "lucide-react";
+import { JSX, useEffect, useState } from "react";
 
-const NotesView: React.FC = () => {
-  return (
-    <TreeView.Root collection={collection}>
-      <TreeView.Label>{collection.rootNode.name}</TreeView.Label>
+type NotesViewProps = {
+  title: string;
+  directory: string;
+};
+
+const NotesView: React.FC<NotesViewProps> = ({ title, directory }) => {
+  const [files, setFiles] = useState<TreeCollection<Node> | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    async function getNodes(name: string, path: string): Promise<Node> {
+      const contents = await readDir(path);
+
+      const node: Node = {
+        id: path,
+        name: name,
+        filepath: path,
+        children: [],
+      };
+
+      contents.forEach(async (entry) => {
+        if (entry.isSymlink) return;
+        const newPath = await join(path, entry.name);
+        if (entry.isDirectory) {
+          node.children!.push(
+            await getNodes(entry.name, await join(path, entry.name))
+          );
+        } else {
+          node.children!.push({
+            id: newPath,
+            name: entry.name,
+            filepath: newPath,
+          });
+        }
+      });
+
+      return node;
+    }
+
+    async function getFiles() {
+      const files = createTreeCollection<Node>({
+        nodeToString: (node) => node.name,
+        nodeToValue: (node) => node.id,
+        rootNode: await getNodes(title, directory),
+      });
+
+      setFiles(files);
+    }
+
+    getFiles();
+  }, [directory]);
+
+  return typeof files === "undefined" ? (
+    <Progress.Root
+      translations={{
+        value({ value, max }) {
+          if (value === null) return "Loading...";
+          return `${value} of ${max} files loaded`;
+        },
+      }}
+    >
+      <Progress.Label>Loading Files</Progress.Label>
+      <Progress.ValueText />
+      <Progress.Circle>
+        <Progress.CircleTrack />
+        <Progress.CircleRange />
+      </Progress.Circle>
+    </Progress.Root>
+  ) : (
+    <TreeView.Root collection={files}>
+      <TreeView.Label>{files.rootNode.name}</TreeView.Label>
       <TreeView.Tree>
-        {collection.rootNode.children?.map((node, index) => (
+        {files.rootNode.children?.map((node, index) => (
           <TreeNode key={node.id} node={node} indexPath={[index]} />
         ))}
       </TreeView.Tree>
@@ -57,46 +133,8 @@ const TreeNode = (props: TreeView.NodeProviderProps<Node>) => {
 interface Node {
   id: string;
   name: string;
+  filepath: string;
   children?: Node[] | undefined;
 }
-
-const collection = createTreeCollection<Node>({
-  nodeToValue: (node) => node.id,
-  nodeToString: (node) => node.name,
-  rootNode: {
-    id: "ROOT",
-    name: "File Tree",
-    children: [
-      {
-        id: "node_modules",
-        name: "node_modules",
-        children: [
-          { id: "node_modules/zag-js", name: "zag-js" },
-          { id: "node_modules/pandacss", name: "panda" },
-          {
-            id: "node_modules/@types",
-            name: "@types",
-            children: [
-              { id: "node_modules/@types/react", name: "react" },
-              { id: "node_modules/@types/react-dom", name: "react-dom" },
-            ],
-          },
-        ],
-      },
-      {
-        id: "src",
-        name: "src",
-        children: [
-          { id: "src/app.tsx", name: "app.tsx" },
-          { id: "src/index.ts", name: "index.ts" },
-        ],
-      },
-      { id: "panda.config", name: "panda.config.ts" },
-      { id: "package.json", name: "package.json" },
-      { id: "renovate.json", name: "renovate.json" },
-      { id: "readme.md", name: "README.md" },
-    ],
-  },
-});
 
 export default NotesView;

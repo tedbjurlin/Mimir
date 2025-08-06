@@ -12,6 +12,7 @@
   "dependencies": {
     "@ark-ui/react": "^5.18.3",
     "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-fs": "^2.4.1",
     "@tauri-apps/plugin-log": "~2.6.0",
     "@tauri-apps/plugin-opener": "^2",
     "lucide-react": "^0.536.0",
