@@ -1,3 +1,11 @@
+@use "./style/_side-dock.scss";
+@use "./style/_title-bar.scss";
+@use "./style/_workspace-container.scss";
+
+:root {
+  --green: #92e62c;
+}
+
 body,
 html {
   width: 100%;

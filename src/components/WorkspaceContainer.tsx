@@ -4,7 +4,6 @@ import NotesView from "./NotesView";
 import SideDock from "./SideDock";
 import LeftLeaf from "./LeftLeaf";
 import { useState } from "react";
-import "@/style/WorkspaceContainer.scss";
 
 const WorkspaceContainer: React.FC = () => {
   const [leftSelectedPanel, setLeftSelectedPanel] = useState("thought");

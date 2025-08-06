@@ -5,7 +5,6 @@ import {
   SearchIcon,
   SettingsIcon,
 } from "lucide-react";
-import "@/style/SideDock.scss";
 
 type SideDockProps = {
   left_panel: string;
