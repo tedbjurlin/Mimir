@@ -1,3 +1,17 @@
+@use "./style/variables";
+
+@use "./style/_partials";
+
+@use "./style/window-splitter";
+@use "./style/_file-tree.scss";
+@use "./style/_side-dock.scss";
+@use "./style/_title-bar.scss";
+@use "./style/_workspace-container.scss";
+
+:root {
+  --green: #92e62c;
+}
+
 body,
 html {
   width: 100%;
@@ -15,4 +29,7 @@ html,
 body,
 #root {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }

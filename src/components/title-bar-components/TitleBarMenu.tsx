@@ -4,7 +4,7 @@ import { LucideMenu } from "lucide-react";
 const TitleBarMenu: React.FC = () => {
   return (
     <Menu.Root>
-      <Menu.Trigger>
+      <Menu.Trigger className="icon-button">
         <LucideMenu />
       </Menu.Trigger>
       <Menu.Positioner>

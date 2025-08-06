@@ -14,33 +14,33 @@ type SideDockProps = {
 const SideDock: React.FC<SideDockProps> = ({ left_panel, set_left_panel }) => {
   return (
     <div className="side-dock">
-      <div className="upper-buttons">
+      <div className="button-group top-button-group">
         <button
-          className={`icon-button side-dock__note-button ${
+          className={`icon-button side-dock__button ${
             left_panel === "thought" && "selected"
           }`}
           onClick={() => set_left_panel("thought")}
         >
-          <BrainIcon className="icon-button__icon side-dock__note-icon" />
+          <BrainIcon className="icon-button__icon side-dock__icon" />
         </button>
         <button
-          className={`icon-button side-dock__note-button ${
+          className={`icon-button side-dock__button ${
             left_panel === "concept" && "selected"
           }`}
           onClick={() => set_left_panel("concept")}
         >
-          <AtomIcon className="icon-button__icon side-dock__note-icon" />
+          <AtomIcon className="icon-button__icon side-dock__icon" />
         </button>
         <button
-          className={`icon-button side-dock__note-button ${
+          className={`icon-button side-dock__button ${
             left_panel === "reference" && "selected"
           }`}
           onClick={() => set_left_panel("reference")}
         >
-          <BookMarkedIcon className="icon-button__icon side-dock__note-icon" />
+          <BookMarkedIcon className="icon-button__icon side-dock__icon" />
         </button>
         <button
-          className={`icon-button side-dock__note-button ${
+          className={`icon-button side-dock__button ${
             left_panel === "search" && "selected"
           }`}
           onClick={() => set_left_panel("search")}
@@ -48,7 +48,7 @@ const SideDock: React.FC<SideDockProps> = ({ left_panel, set_left_panel }) => {
           <SearchIcon className="icon-button__icon side-dock__icon" />
         </button>
       </div>
-      <div className="lower-buttons">
+      <div className="button-group bottom-button-group">
         <button className="icon-button side-dock__button">
           <SettingsIcon className="icon-button__icon side-dock__icon" />
         </button>
