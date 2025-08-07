@@ -11,20 +11,23 @@
   },
   "dependencies": {
     "@ark-ui/react": "^5.18.3",
-    "@tauri-apps/api": "^2",
+    "@tauri-apps/api": "^2.7.0",
+    "@tauri-apps/plugin-dialog": "~2.3.2",
+    "@tauri-apps/plugin-fs": "~2.4.1",
     "@tauri-apps/plugin-log": "~2.6.0",
-    "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-opener": "^2.4.0",
+    "@tauri-apps/plugin-store": "^2.3.0",
     "lucide-react": "^0.536.0",
     "pnpm": "^10.14.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "sass": "^1.89.2"
+    "sass": "^1.90.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2",
+    "@tauri-apps/cli": "^2.7.1",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^4.7.0",
     "typescript": "5.8.3",
     "vite": "7.0.4",
     "vite-tsconfig-paths": "^5.1.4"

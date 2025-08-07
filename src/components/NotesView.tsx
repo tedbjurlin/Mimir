@@ -1,26 +1,128 @@
-import { createTreeCollection, TreeView } from "@ark-ui/react";
-import {
-  CheckSquareIcon,
-  ChevronRightIcon,
-  FileIcon,
-  FolderIcon,
-} from "lucide-react";
+import { createTreeCollection, TreeCollection, TreeView } from "@ark-ui/react";
+import { readTextFile, readDir } from "@tauri-apps/plugin-fs";
+import { extname, join } from "@tauri-apps/api/path";
+import { ChevronRightIcon, FileIcon } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import { debug } from "@tauri-apps/plugin-log";
+import { AppStateDispatchContext } from "@/state/AppStateContext";
 
-const NotesView: React.FC = () => {
+const textExtensions = ["txt", "md", "typ"];
+
+type NotesViewProps = {
+  title: string;
+  directory?: string;
+  style?: React.CSSProperties;
+};
+
+const NotesView: React.FC<NotesViewProps> = ({ title, directory, style }) => {
+  const [files, setFiles] = useState<TreeCollection<Node> | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    async function getNodes(name: string, path: string): Promise<Node> {
+      debug(`test`);
+      const contents = await readDir(path);
+
+      debug(`${contents.length}`);
+
+      const node: Node = {
+        id: path,
+        name: name,
+        filepath: path,
+        children: [],
+      };
+
+      contents.forEach(async (entry) => {
+        if (entry.isSymlink) return;
+        const newPath = await join(path, entry.name);
+        if (entry.isDirectory) {
+          debug(entry.name);
+          node.children!.push(
+            await getNodes(entry.name, await join(path, entry.name))
+          );
+        } else {
+          node.children!.push({
+            id: newPath,
+            name: entry.name,
+            filepath: newPath,
+          });
+        }
+      });
+
+      return node;
+    }
+
+    async function getFiles() {
+      if (typeof directory === "undefined") return;
+
+      debug(`${title}`);
+      const nodes = await getNodes(title, directory!);
+      const files = createTreeCollection<Node>({
+        nodeToString: (node) => node.name,
+        nodeToValue: (node) => node.id,
+        rootNode: nodes,
+      });
+
+      setFiles(files);
+    }
+
+    getFiles();
+  }, [directory]);
+
   return (
-    <TreeView.Root collection={collection}>
-      <TreeView.Label>{collection.rootNode.name}</TreeView.Label>
-      <TreeView.Tree>
-        {collection.rootNode.children?.map((node, index) => (
-          <TreeNode key={node.id} node={node} indexPath={[index]} />
-        ))}
-      </TreeView.Tree>
-    </TreeView.Root>
+    <div className="notes-list-view" style={style}>
+      {typeof files === "undefined" ? (
+        <>Loading</>
+      ) : (
+        // <Progress.Root
+        //   defaultValue={null}
+        //   style={style}
+        //   translations={{
+        //     value({ value, max }) {
+        //       if (value === null) return "Loading...";
+        //       return `${value} of ${max} files loaded`;
+        //     },
+        //   }}
+        // >
+        //   <Progress.Label>Loading Files</Progress.Label>
+        //   <Progress.ValueText />
+        //   <Progress.Circle>
+        //     <Progress.CircleTrack />
+        //     <Progress.CircleRange />
+        //   </Progress.Circle>
+        // </Progress.Root>
+        <TreeView.Root collection={files}>
+          <TreeView.Label>{files.rootNode.name}</TreeView.Label>
+          <TreeView.Tree>
+            {files.rootNode.children?.map((node, index) => (
+              <TreeNode key={node.id} node={node} indexPath={[index]} />
+            ))}
+          </TreeView.Tree>
+        </TreeView.Root>
+      )}
+    </div>
   );
 };
 
-const TreeNode = (props: TreeView.NodeProviderProps<Node>) => {
-  const { node, indexPath } = props;
+const TreeNode = ({ node, indexPath }: TreeView.NodeProviderProps<Node>) => {
+  const dispatch = useContext(AppStateDispatchContext)!;
+
+  async function handleOpenFile() {
+    debug(await extname(node.filepath));
+    if (!textExtensions.includes(await extname(node.filepath))) return;
+    const contents = await readTextFile(node.filepath);
+    dispatch({
+      type: "open_file",
+      title: node.name,
+      data: {
+        name: node.name,
+        filepath: node.filepath,
+        contents: contents,
+      },
+    });
+  }
+
   return (
     <TreeView.NodeProvider key={node.id} node={node} indexPath={indexPath}>
       {node.children ? (
@@ -43,7 +145,7 @@ const TreeNode = (props: TreeView.NodeProviderProps<Node>) => {
           </TreeView.BranchContent>
         </TreeView.Branch>
       ) : (
-        <TreeView.Item>
+        <TreeView.Item onClick={handleOpenFile}>
           <TreeView.ItemText>
             <FileIcon className="tree-icon" />
             {node.name}
@@ -57,46 +159,8 @@ const TreeNode = (props: TreeView.NodeProviderProps<Node>) => {
 interface Node {
   id: string;
   name: string;
+  filepath: string;
   children?: Node[] | undefined;
 }
-
-const collection = createTreeCollection<Node>({
-  nodeToValue: (node) => node.id,
-  nodeToString: (node) => node.name,
-  rootNode: {
-    id: "ROOT",
-    name: "File Tree",
-    children: [
-      {
-        id: "node_modules",
-        name: "node_modules",
-        children: [
-          { id: "node_modules/zag-js", name: "zag-js" },
-          { id: "node_modules/pandacss", name: "panda" },
-          {
-            id: "node_modules/@types",
-            name: "@types",
-            children: [
-              { id: "node_modules/@types/react", name: "react" },
-              { id: "node_modules/@types/react-dom", name: "react-dom" },
-            ],
-          },
-        ],
-      },
-      {
-        id: "src",
-        name: "src",
-        children: [
-          { id: "src/app.tsx", name: "app.tsx" },
-          { id: "src/index.ts", name: "index.ts" },
-        ],
-      },
-      { id: "panda.config", name: "panda.config.ts" },
-      { id: "package.json", name: "package.json" },
-      { id: "renovate.json", name: "renovate.json" },
-      { id: "readme.md", name: "README.md" },
-    ],
-  },
-});
 
 export default NotesView;

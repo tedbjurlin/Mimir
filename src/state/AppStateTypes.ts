@@ -34,5 +34,11 @@ type AppStateTabAction = {
 type AppStateContentAction = {
   type: "open_file" | "update_content";
   title: string;
-  content: string;
+  data: FileData;
+}
+
+type FileData = {
+  name: string;
+  filepath: string;
+  contents: string;
 }
