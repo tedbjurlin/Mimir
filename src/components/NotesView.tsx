@@ -3,7 +3,6 @@ import { readTextFile, readDir } from "@tauri-apps/plugin-fs";
 import { extname, join } from "@tauri-apps/api/path";
 import { ChevronRightIcon, FileIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { debug } from "@tauri-apps/plugin-log";
 import { AppStateDispatchContext } from "@/state/AppStateContext";
 
 const textExtensions = ["txt", "md", "typ"];
@@ -21,10 +20,7 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory, style }) => {
 
   useEffect(() => {
     async function getNodes(name: string, path: string): Promise<Node> {
-      debug(`test`);
       const contents = await readDir(path);
-
-      debug(`${contents.length}`);
 
       const node: Node = {
         id: path,
@@ -37,7 +33,6 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory, style }) => {
         if (entry.isSymlink) return;
         const newPath = await join(path, entry.name);
         if (entry.isDirectory) {
-          debug(entry.name);
           node.children!.push(
             await getNodes(entry.name, await join(path, entry.name))
           );
@@ -56,7 +51,6 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory, style }) => {
     async function getFiles() {
       if (typeof directory === "undefined") return;
 
-      debug(`${title}`);
       const nodes = await getNodes(title, directory!);
       const files = createTreeCollection<Node>({
         nodeToString: (node) => node.name,
@@ -109,7 +103,6 @@ const TreeNode = ({ node, indexPath }: TreeView.NodeProviderProps<Node>) => {
   const dispatch = useContext(AppStateDispatchContext)!;
 
   async function handleOpenFile() {
-    debug(await extname(node.filepath));
     if (!textExtensions.includes(await extname(node.filepath))) return;
     const contents = await readTextFile(node.filepath);
     dispatch({

@@ -8,11 +8,9 @@ const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
   const [appState, dispatch] = useReducer(appStateReducer, initialAppState());
 
   return (
-    <AppStateContext value={appState}>
-      <AppStateDispatchContext value={dispatch}>
-        {children}
-      </AppStateDispatchContext>
-    </AppStateContext>
+    <AppStateDispatchContext value={dispatch}>
+      <AppStateContext value={appState}>{children}</AppStateContext>
+    </AppStateDispatchContext>
   );
 };
 

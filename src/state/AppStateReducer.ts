@@ -4,7 +4,6 @@ import { AppState, AppStateAction, TabGroupNode, WorkspaceNode } from "./AppStat
 export function appStateReducer(prevState: AppState, action: AppStateAction): AppState {
   switch (action.type) {
     case "close_tab": {
-      debug("closing tab");
       const node = getNode(action.path, prevState.workspace_state);
       if (node === null || node.node_type !== "leaf") break;
       var idx = -1;
@@ -14,18 +13,17 @@ export function appStateReducer(prevState: AppState, action: AppStateAction): Ap
           break;
         }
       }
-      debug(`${idx}`);
       if (idx === -1) break;
       // const newTabs = node.tabs.toSpliced(idx, 1);
-      // debug(`Tabs len: ${node.tabs.length}, new len: ${newTabs.length}`)
       // const newNode = {
       //   ...node,
       //   tabs: newTabs,
       // }
-      node.tabs.splice(idx, 1);
+      const newTabs = [...node.tabs]
+      newTabs.splice(idx, 1);
       const newNode = {
         ...node,
-        tabs: [...node.tabs]
+        tabs: newTabs
       }
       const newState = setNode(action.path, prevState.workspace_state, newNode);
       if (newState !== null) {
@@ -38,12 +36,13 @@ export function appStateReducer(prevState: AppState, action: AppStateAction): Ap
     }
     case "open_file": {
       const leaf = findFirstLeaf(prevState.workspace_state);
-      leaf.tabs.push({
+      const newTabs = [...leaf.tabs];
+      newTabs.push({
         uuid: crypto.randomUUID(),
         title: action.title,
         contents: action.data,
       })
-      const newState = setNode(leaf.path, prevState.workspace_state, leaf);
+      const newState = setNode(leaf.path, prevState.workspace_state, {...leaf, tabs: newTabs});
       if (newState !== null) {
         return {
           ...prevState,
@@ -101,7 +100,7 @@ function setNode(path: ("left" | "right")[], root: WorkspaceNode, node: Workspac
   if (path.length > 0 && root.node_type !== "node") {
     return null
   } else if (path.length <= 0) {
-    return root;
+    return node;
   } else if (root.node_type === "node") {
     const newNode = setNode(path.slice(1), root[path[0]], node);
     if (newNode === null) return null;
