@@ -19,6 +19,10 @@
     "@tauri-apps/plugin-store": "^2.3.0",
     "lucide-react": "^0.536.0",
     "pnpm": "^10.14.0",
+    "prosemirror-model": "^1.25.3",
+    "prosemirror-schema-basic": "^1.2.4",
+    "prosemirror-state": "^1.4.3",
+    "prosemirror-view": "^1.40.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sass": "^1.90.0"
