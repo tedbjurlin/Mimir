@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ark-ui/react": "^5.18.3",
+    "@handlewithcare/react-prosemirror": "^2.4.11",
     "@tauri-apps/api": "^2.7.0",
     "@tauri-apps/plugin-dialog": "~2.3.2",
     "@tauri-apps/plugin-fs": "~2.4.1",
@@ -19,12 +20,14 @@
     "@tauri-apps/plugin-store": "^2.3.0",
     "lucide-react": "^0.536.0",
     "pnpm": "^10.14.0",
+    "prosemirror-markdown": "^1.13.2",
     "prosemirror-model": "^1.25.3",
     "prosemirror-schema-basic": "^1.2.4",
     "prosemirror-state": "^1.4.3",
-    "prosemirror-view": "^1.40.1",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "prosemirror-view": "1.39.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-reconciler": "0.32.0",
     "sass": "^1.90.0"
   },
   "devDependencies": {

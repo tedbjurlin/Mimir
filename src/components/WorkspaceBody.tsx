@@ -2,6 +2,7 @@ import { AppStateContext } from "@/state/AppStateContext";
 import { PanelTreeNode, TabGroup } from "@/state/AppStateTypes";
 import { Splitter, Tabs } from "@ark-ui/react";
 import { useContext } from "react";
+import TextEditor from "./TextEditor";
 
 const WorkspaceBody: React.FC = () => {
   const appState = useContext(AppStateContext);
@@ -38,7 +39,9 @@ const WorkspaceBody: React.FC = () => {
             </Tabs.List>
             {body.tabs.map((tab) => {
               return (
-                <Tabs.Content value={tab.uuid}>{tab.contents}</Tabs.Content>
+                <Tabs.Content value={tab.uuid}>
+                  <TextEditor content={tab.contents.contents} />
+                </Tabs.Content>
               );
             })}
           </Tabs.Root>

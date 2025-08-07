@@ -21,7 +21,7 @@ export type Tab = {
   uuid: `${string}-${string}-${string}-${string}-${string}`;
   group_uuid: `${string}-${string}-${string}-${string}-${string}`;
   title: string;
-  contents: string;
+  contents: FileData;
 }
 
 export type AppStateAction = AppStateTabAction | AppStateContentAction;

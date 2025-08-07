@@ -6,9 +6,8 @@ import TextEditor from "./components/TextEditor";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    {/* <SettingsProvider>
+    <SettingsProvider>
       <App />
-    </SettingsProvider> */}
-    <TextEditor />
+    </SettingsProvider>
   </React.StrictMode>
 );
