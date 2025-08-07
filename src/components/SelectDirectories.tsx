@@ -17,6 +17,8 @@ const SelectDirectories: React.FC<SelectDirectoriesProps> = ({ setStore }) => {
     const folder = await open({
       multiple: false,
       directory: true,
+      recursive: true,
+      title: "Pick a Thoughts Folder",
     });
 
     setThoughtsFolder(folder);
@@ -30,6 +32,8 @@ const SelectDirectories: React.FC<SelectDirectoriesProps> = ({ setStore }) => {
     const folder = await open({
       multiple: false,
       directory: true,
+      recursive: true,
+      title: "Pick a Concept Note Folder",
     });
 
     setConceptsFolder(folder);
@@ -42,6 +46,8 @@ const SelectDirectories: React.FC<SelectDirectoriesProps> = ({ setStore }) => {
     const folder = await open({
       multiple: false,
       directory: true,
+      recursive: true,
+      title: "Pick a Reference Note Folder",
     });
 
     setReferenceFolder(folder);
@@ -68,7 +74,7 @@ const SelectDirectories: React.FC<SelectDirectoriesProps> = ({ setStore }) => {
     store.set("thoughts-notes-folder", thoughtsFolder);
     store.set("concepts-notes-folder", conceptsFolder);
     store.set("reference-notes-folder", referenceFolder);
-
+    store.save();
     setStore(store);
   }
 

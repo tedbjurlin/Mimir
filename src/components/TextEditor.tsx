@@ -11,26 +11,40 @@ import {
   defaultMarkdownSerializer,
 } from "prosemirror-markdown";
 import { EditorState, Transaction } from "prosemirror-state";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppStateDispatchContext } from "@/state/AppStateContext";
+import { FileData } from "@/state/AppStateTypes";
 
 const TYPING_TIMEOUT = 200;
 
-const TextEditor: React.FC<{ content: string }> = ({ content }) => {
+const TextEditor: React.FC<{
+  file: FileData;
+  tab_path: ("left" | "right")[];
+}> = ({ file, tab_path }) => {
+  const dispatch = useContext(AppStateDispatchContext)!;
+
   const [editorState, setEditorState] = useState(
     EditorState.create({
       schema: markdownSchema,
       plugins: [reactKeys()],
-      doc: defaultMarkdownParser.parse(content),
+      doc: defaultMarkdownParser.parse(file.contents),
     })
   );
-
-  useEffect(() => {}, [content]);
 
   return (
     <ProseMirror
       state={editorState}
       dispatchTransaction={(tr: Transaction) => {
         setEditorState((s) => s.apply(tr));
+        dispatch({
+          type: "update_content",
+          title: file.name,
+          data: {
+            ...file,
+            contents: defaultMarkdownSerializer.serialize(tr.doc),
+          },
+          path: tab_path,
+        });
       }}
     >
       <ProseMirrorDoc />

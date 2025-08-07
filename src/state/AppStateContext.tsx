@@ -27,7 +27,7 @@ function initialAppState(): AppState {
   return {
     workspace_state: {
       node_type: "leaf",
-      uuid: crypto.randomUUID(),
+      path: [],
       tabs: [],
     },
   };
