@@ -1,0 +1,8 @@
+.workspace-resizer {
+  position: absolute;
+  height: 100dvh;
+}
+
+.workspace-resizer:hover {
+  background-color: grey;
+}
