@@ -1,9 +1,12 @@
 import { createTreeCollection, TreeCollection, TreeView } from "@ark-ui/react";
-import { readDir } from "@tauri-apps/plugin-fs";
-import { join } from "@tauri-apps/api/path";
+import { readTextFile, readDir } from "@tauri-apps/plugin-fs";
+import { extname, join } from "@tauri-apps/api/path";
 import { ChevronRightIcon, FileIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { debug } from "@tauri-apps/plugin-log";
+import { AppStateDispatchContext } from "@/state/AppStateContext";
+
+const textExtensions = ["txt", "md", "typ"];
 
 type NotesViewProps = {
   title: string;
@@ -102,8 +105,24 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory, style }) => {
   );
 };
 
-const TreeNode = (props: TreeView.NodeProviderProps<Node>) => {
-  const { node, indexPath } = props;
+const TreeNode = ({ node, indexPath }: TreeView.NodeProviderProps<Node>) => {
+  const dispatch = useContext(AppStateDispatchContext)!;
+
+  async function handleOpenFile() {
+    debug(await extname(node.filepath));
+    if (!textExtensions.includes(await extname(node.filepath))) return;
+    const contents = await readTextFile(node.filepath);
+    dispatch({
+      type: "open_file",
+      title: node.name,
+      data: {
+        name: node.name,
+        filepath: node.filepath,
+        contents: contents,
+      },
+    });
+  }
+
   return (
     <TreeView.NodeProvider key={node.id} node={node} indexPath={indexPath}>
       {node.children ? (
@@ -126,7 +145,7 @@ const TreeNode = (props: TreeView.NodeProviderProps<Node>) => {
           </TreeView.BranchContent>
         </TreeView.Branch>
       ) : (
-        <TreeView.Item>
+        <TreeView.Item onClick={handleOpenFile}>
           <TreeView.ItemText>
             <FileIcon className="tree-icon" />
             {node.name}
