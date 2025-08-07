@@ -1,0 +1,22 @@
+body[data-theme="light"] {
+  --background-color-primary: white;
+  --background-color-secondary: rgb(221, 221, 221);
+  --background-color-tertiary: rgb(190, 190, 190);
+  --foreground-color-primary: black;
+  --foreground-color-secondary: rgb(60, 60, 60);
+  --foreground-color-tertiary: rgb(168, 168, 168);
+
+  --accent-color-1: green;
+  --accent-color-2: green;
+  --accent-color-3: green;
+
+  & .icon-button {
+    --icon-button-border-radius: 35%;
+    --icon-button-border: 0;
+    --icon-button-background-color: transparent;
+
+    &:hover {
+      --icon-button-background-color: var(--background-color-secondary);
+    }
+  }
+}

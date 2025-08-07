@@ -1,20 +1,25 @@
+import { useEffect } from "react";
 import "./App.scss";
-import Editor from "./components/Editor";
-import BodyContainer from "./components/BodyContainer";
-import WorkspaceBody from "./components/workspace/WorkspaceBody";
-import { TabsProvider } from "./components/tabs/TabContext";
+import TitleBar from "./components/TitleBar";
+import WorkspaceContainer from "./components/WorkspaceContainer";
+import AppStateProvider from "./state/AppStateContext";
 
 const App: React.FC = () => {
+  useEffect(() => {});
+
+  useEffect(() => {
+    document.body.setAttribute("data-theme", "light");
+
+    return () => {
+      document.body.removeAttribute("data-theme");
+    };
+  });
+
   return (
-    <div
-      style={{
-        marginLeft: 100,
-      }}
-    >
-      <TabsProvider>
-        <WorkspaceBody />
-      </TabsProvider>
-    </div>
+    <AppStateProvider>
+      <TitleBar />
+      <WorkspaceContainer />
+    </AppStateProvider>
   );
 };
 

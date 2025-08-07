@@ -1,4 +1,16 @@
-@import "tailwindcss";
+@use "./style/variables";
+
+@use "./style/_partials";
+
+@use "./style/window-splitter";
+@use "./style/_file-tree.scss";
+@use "./style/_side-dock.scss";
+@use "./style/_title-bar.scss";
+@use "./style/_workspace-container.scss";
+
+:root {
+  --green: #92e62c;
+}
 
 body,
 html {
@@ -17,27 +29,7 @@ html,
 body,
 #root {
   height: 100vh;
-}
-
-.file-icon {
-  &--text-level {
-    height: 0.8rem;
-  }
-}
-
-.icon-button {
-  &--text-level {
-    height: 1rem;
-    width: 1rem;
-
-    &:hover {
-      background-color: black;
-      border-radius: 0.1rem;
-      color: white;
-    }
-  }
-
-  &__icon--text-level {
-    height: 0.8rem;
-  }
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
