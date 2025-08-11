@@ -2,7 +2,10 @@
 
 @use "./style/_partials";
 
-@use "./style/window-splitter";
+@use "prosemirror-view/style/prosemirror.css";
+
+@use "./style/_tabs.scss";
+@use "./style/_window-splitter.scss";
 @use "./style/_file-tree.scss";
 @use "./style/_side-dock.scss";
 @use "./style/_title-bar.scss";

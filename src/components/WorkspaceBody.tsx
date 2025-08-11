@@ -1,27 +1,59 @@
-import { AppStateContext } from "@/state/AppStateContext";
-import { PanelTreeNode, TabGroup } from "@/state/AppStateTypes";
+import {
+  AppStateContext,
+  AppStateDispatchContext,
+} from "@/state/AppStateContext";
+import { PanelTreeNode, TabGroupNode } from "@/state/AppStateTypes";
 import { Splitter, Tabs } from "@ark-ui/react";
 import { useContext } from "react";
+import TextEditor from "./TextEditor";
+import { XIcon } from "lucide-react";
 
 const WorkspaceBody: React.FC = () => {
-  const appState = useContext(AppStateContext);
+  const appState = useContext(AppStateContext)!;
+  const dispatch = useContext(AppStateDispatchContext)!;
 
-  function renderBody(body: PanelTreeNode | TabGroup): React.ReactNode {
+  function calculateID(path: string[]): string {
+    return (
+      "workspace-panel" +
+      path.reduce((acc, curr) => {
+        return acc + "-" + curr;
+      })
+    );
+  }
+
+  function handleCloseTab(
+    uuid: `${string}-${string}-${string}-${string}-${string}`,
+    path: ("left" | "right")[]
+  ) {
+    dispatch({
+      type: "close_tab",
+      uuid,
+      path,
+    });
+  }
+
+  function renderBody(body: PanelTreeNode | TabGroupNode): React.ReactNode {
     switch (body.node_type) {
       case "node":
         return (
           <Splitter.Root
             orientation={body.orientation}
-            panels={[{ id: body.left.uuid }, { id: body.right.uuid }]}
+            panels={[
+              { id: calculateID([...body.path, "left"]) },
+              { id: calculateID([...body.path, "right"]) },
+            ]}
           >
-            <Splitter.Panel id={body.left.uuid}>
+            <Splitter.Panel id={calculateID([...body.path, "left"])}>
               {renderBody(body.left)}
             </Splitter.Panel>
             <Splitter.ResizeTrigger
-              id={`${body.left.uuid}:${body.right.uuid}`}
+              id={`${calculateID([...body.path, "left"])}:${calculateID([
+                ...body.path,
+                "right",
+              ])}`}
               aria-label="Resize"
             ></Splitter.ResizeTrigger>
-            <Splitter.Panel id={body.right.uuid}>
+            <Splitter.Panel id={calculateID([...body.path, "right"])}>
               {renderBody(body.right)}
             </Splitter.Panel>
           </Splitter.Root>
@@ -32,13 +64,26 @@ const WorkspaceBody: React.FC = () => {
             <Tabs.List>
               {body.tabs.map((tab) => {
                 return (
-                  <Tabs.Trigger value={tab.uuid}>{tab.title}</Tabs.Trigger>
+                  <Tabs.Trigger key={tab.uuid} value={tab.uuid}>
+                    {tab.title}
+                    <span
+                      role="button"
+                      className="close-tab-button icon-button"
+                      onClick={() => {
+                        handleCloseTab(tab.uuid, body.path);
+                      }}
+                    >
+                      <XIcon />
+                    </span>
+                  </Tabs.Trigger>
                 );
               })}
             </Tabs.List>
             {body.tabs.map((tab) => {
               return (
-                <Tabs.Content value={tab.uuid}>{tab.contents}</Tabs.Content>
+                <Tabs.Content key={tab.uuid} value={tab.uuid}>
+                  <TextEditor file={tab.contents} tab_path={body.path} />
+                </Tabs.Content>
               );
             })}
           </Tabs.Root>

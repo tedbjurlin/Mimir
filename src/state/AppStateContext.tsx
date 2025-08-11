@@ -8,11 +8,9 @@ const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
   const [appState, dispatch] = useReducer(appStateReducer, initialAppState());
 
   return (
-    <AppStateContext value={appState}>
-      <AppStateDispatchContext value={dispatch}>
-        {children}
-      </AppStateDispatchContext>
-    </AppStateContext>
+    <AppStateDispatchContext value={dispatch}>
+      <AppStateContext value={appState}>{children}</AppStateContext>
+    </AppStateDispatchContext>
   );
 };
 
@@ -24,37 +22,11 @@ export const AppStateDispatchContext = createContext<ActionDispatch<
 export default AppStateProvider;
 
 function initialAppState(): AppState {
-  const group_1_uuid = crypto.randomUUID();
-  const group_2_uuid = crypto.randomUUID();
   return {
     workspace_state: {
-      node_type: "node",
-      uuid: crypto.randomUUID(),
-      orientation: "vertical",
-      left: {
-        uuid: group_1_uuid,
-        node_type: "leaf",
-        tabs: [
-          {
-            uuid: crypto.randomUUID(),
-            group_uuid: group_1_uuid,
-            title: "New Tab",
-            contents: "Nothing to see here",
-          },
-        ],
-      },
-      right: {
-        uuid: group_2_uuid,
-        node_type: "leaf",
-        tabs: [
-          {
-            uuid: crypto.randomUUID(),
-            group_uuid: group_2_uuid,
-            title: "New Tab 2",
-            contents: "Nothing else to see here",
-          },
-        ],
-      },
+      node_type: "leaf",
+      path: [],
+      tabs: [],
     },
   };
 }
