@@ -4,6 +4,7 @@ import { extname, join } from "@tauri-apps/api/path";
 import { ChevronRightIcon, FileIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { AppStateDispatchContext } from "@/state/AppStateContext";
+import { invoke } from "@tauri-apps/api/core";
 
 const textExtensions = ["txt", "md", "typ"];
 
@@ -105,16 +106,24 @@ const TreeNode = ({ node, indexPath }: TreeView.NodeProviderProps<Node>) => {
   async function handleOpenFile() {
     if (!textExtensions.includes(await extname(node.filepath))) return;
 
-    const contents = await readTextFile(node.filepath);
-    dispatch({
-      type: "open_file",
-      title: node.name,
-      data: {
-        name: node.name,
-        filepath: node.filepath,
-        contents: contents,
-      },
-    });
+    var file_allowed = true;
+
+    invoke("allow_file", { path: node.filepath }).catch(
+      (_e) => (file_allowed = false)
+    );
+
+    if (file_allowed) {
+      const contents = await readTextFile(node.filepath);
+      dispatch({
+        type: "open_file",
+        title: node.name,
+        data: {
+          name: node.name,
+          filepath: node.filepath,
+          contents: contents,
+        },
+      });
+    }
   }
 
   return (
