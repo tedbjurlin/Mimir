@@ -66,14 +66,15 @@ const WorkspaceBody: React.FC = () => {
                 return (
                   <Tabs.Trigger key={tab.uuid} value={tab.uuid}>
                     {tab.title}
-                    <button
+                    <span
+                      role="button"
                       className="close-tab-button icon-button"
                       onClick={() => {
                         handleCloseTab(tab.uuid, body.path);
                       }}
                     >
                       <XIcon />
-                    </button>
+                    </span>
                   </Tabs.Trigger>
                 );
               })}
