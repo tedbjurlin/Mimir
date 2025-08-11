@@ -5,6 +5,8 @@ import { ChevronRightIcon, FileIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { AppStateDispatchContext } from "@/state/AppStateContext";
 import { invoke } from "@tauri-apps/api/core";
+import Database from "@tauri-apps/plugin-sql";
+import { debug } from "@tauri-apps/plugin-log";
 
 const textExtensions = ["txt", "md", "typ"];
 
@@ -105,6 +107,15 @@ const TreeNode = ({ node, indexPath }: TreeView.NodeProviderProps<Node>) => {
 
   async function handleOpenFile() {
     if (!textExtensions.includes(await extname(node.filepath))) return;
+
+    const db = await Database.load("sqlite:test.db");
+    debug("inserting into db");
+    await db
+      .execute(
+        "INSERT into documents (filepath, name, type) VALUES ($1, $2, $3)",
+        [node.filepath, node.name, "thought"]
+      )
+      .catch((e) => debug(`${e}`));
 
     var file_allowed = true;
 
