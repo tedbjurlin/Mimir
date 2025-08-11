@@ -1,5 +1,6 @@
 import { debug } from "@tauri-apps/plugin-log";
 import { AppState, AppStateAction, TabGroupNode, WorkspaceNode } from "./AppStateTypes";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 export function appStateReducer(prevState: AppState, action: AppStateAction): AppState {
   switch (action.type) {
@@ -52,6 +53,8 @@ export function appStateReducer(prevState: AppState, action: AppStateAction): Ap
       break;
     }
     case "update_content": {
+      debug(action.data.contents);
+      writeTextFile(action.data.filepath, action.data.contents);
       const node = getNode(action.path, prevState.workspace_state);
       if (node === null || node.node_type !== "leaf") break;
       var idx = -1;
@@ -78,6 +81,7 @@ export function appStateReducer(prevState: AppState, action: AppStateAction): Ap
           workspace_state: newState,
         }
       }
+
       break;
     }
   }

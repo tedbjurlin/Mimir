@@ -104,6 +104,7 @@ const TreeNode = ({ node, indexPath }: TreeView.NodeProviderProps<Node>) => {
 
   async function handleOpenFile() {
     if (!textExtensions.includes(await extname(node.filepath))) return;
+
     const contents = await readTextFile(node.filepath);
     dispatch({
       type: "open_file",
