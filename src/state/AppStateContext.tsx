@@ -48,7 +48,7 @@ const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
         .catch((e) => debug(`Error: ${e}`))
         .then((fs) => new Set(fs!.map((f) => f.filepath)));
 
-      debug(`${files.size}`);
+      //debug(`${files.size}`);
 
       const thoughts_folder = await settings.get<string>(THOUGHTS_NOTES_FOLDER);
       const concepts_folder = await settings.get<string>(CONCEPTS_NOTES_FOLDER);
@@ -85,50 +85,41 @@ const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
       for (const file of files) {
-        debug(`Checking file: ${file}`);
+        //debug(`Checking file: ${file}`);
         if (!(await exists(file)) || (await lstat(file)).isDirectory) {
           db.execute("DELETE FROM documents WHERE filepath = $1", [file]);
         }
-        debug(`Done checking file: ${file}`);
+        //debug(`Done checking file: ${file}`);
       }
 
-      debug(`${thoughts_folder!}`);
+      //debug(`${thoughts_folder!}`);
+    };
 
-      await watch(
-        thoughts_folder!,
-        (_event) => {
-          checkFiles();
-        },
-        {
-          delayMs: 500,
-          recursive: true,
-        }
+    const setWatch = async () => {
+      const thoughts_folder = await settings.get<string>(THOUGHTS_NOTES_FOLDER);
+      const concepts_folder = await settings.get<string>(CONCEPTS_NOTES_FOLDER);
+      const reference_folder = await settings.get<string>(
+        REFERENCE_NOTES_FOLDER
       );
 
       await watch(
-        concepts_folder!,
-        (_event) => {
-          checkFiles();
+        [thoughts_folder!, concepts_folder!, reference_folder!],
+        (event) => {
+          // ideally, I should be deciding what to do based off
+          // of the kind of change, rather than rerunning entirely.
+          //const { type, paths } = event;
+          //debug(`accessed`);
+          //checkFiles();
         },
         {
-          delayMs: 500,
-          recursive: true,
-        }
-      );
-
-      await watch(
-        reference_folder!,
-        (_event) => {
-          // ideally, I should be deciding what to do based off of the kind of change, rather than rerunning entirely.
-          checkFiles();
-        },
-        {
-          delayMs: 500,
+          delayMs: 5000,
           recursive: true,
         }
       );
     };
+
     checkFiles();
+    setWatch();
   }, []);
 
   return (
