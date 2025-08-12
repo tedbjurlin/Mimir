@@ -119,6 +119,7 @@ const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
       await watch(
         reference_folder!,
         (_event) => {
+          // ideally, I should be deciding what to do based off of the kind of change, rather than rerunning entirely.
           checkFiles();
         },
         {
