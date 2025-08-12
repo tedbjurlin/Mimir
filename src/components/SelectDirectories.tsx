@@ -1,3 +1,8 @@
+import {
+  CONCEPTS_NOTES_FOLDER,
+  REFERENCE_NOTES_FOLDER,
+  THOUGHTS_NOTES_FOLDER,
+} from "@/state/SettingsContext";
 import { open } from "@tauri-apps/plugin-dialog";
 import { load, Store } from "@tauri-apps/plugin-store";
 import { FolderIcon } from "lucide-react";
@@ -55,9 +60,9 @@ const SelectDirectories: React.FC<SelectDirectoriesProps> = ({ setStore }) => {
 
     const store = await load(".settings.json");
 
-    store.set("thoughts-notes-folder", thoughtsFolder);
-    store.set("concepts-notes-folder", conceptsFolder);
-    store.set("reference-notes-folder", referenceFolder);
+    store.set(THOUGHTS_NOTES_FOLDER, thoughtsFolder);
+    store.set(CONCEPTS_NOTES_FOLDER, conceptsFolder);
+    store.set(REFERENCE_NOTES_FOLDER, referenceFolder);
     store.save();
     setStore(store);
   }

@@ -1,6 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import NotesView from "./NotesView";
-import { SettingsContext } from "@/state/SettingsContext";
+import {
+  CONCEPTS_NOTES_FOLDER,
+  REFERENCE_NOTES_FOLDER,
+  SettingsContext,
+  THOUGHTS_NOTES_FOLDER,
+} from "@/state/SettingsContext";
 
 type LeftLeafProps = {
   selected_panel: string;
@@ -30,9 +35,9 @@ const LeftLeaf: React.FC<LeftLeafProps> = ({ selected_panel }) => {
 
   useEffect(() => {
     async function getFilePaths() {
-      setThoughtsFolder(await settings.get("thoughts-notes-folder"));
-      setConceptsFolder(await settings.get("concepts-notes-folder"));
-      setReferenceFolder(await settings.get("reference-notes-folder"));
+      setThoughtsFolder(await settings.get(THOUGHTS_NOTES_FOLDER));
+      setConceptsFolder(await settings.get(CONCEPTS_NOTES_FOLDER));
+      setReferenceFolder(await settings.get(REFERENCE_NOTES_FOLDER));
     }
     getFilePaths();
   }, [settings]);

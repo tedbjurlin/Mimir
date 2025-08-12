@@ -23,7 +23,9 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory, style }) => {
 
   useEffect(() => {
     async function getNodes(name: string, path: string): Promise<Node> {
+      debug("test");
       const contents = await readDir(path);
+      debug("test");
 
       const node: Node = {
         id: path,
@@ -107,15 +109,6 @@ const TreeNode = ({ node, indexPath }: TreeView.NodeProviderProps<Node>) => {
 
   async function handleOpenFile() {
     if (!textExtensions.includes(await extname(node.filepath))) return;
-
-    const db = await Database.load("sqlite:test.db");
-    debug("inserting into db");
-    await db
-      .execute(
-        "INSERT into documents (filepath, name, type) VALUES ($1, $2, $3)",
-        [node.filepath, node.name, "thought"]
-      )
-      .catch((e) => debug(`${e}`));
 
     var file_allowed = true;
 
