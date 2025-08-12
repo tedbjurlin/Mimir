@@ -20,6 +20,12 @@
         }
       ]
     },
+    {
+      "identifier": "fs:allow-home-meta-recursive"
+    },
+    {
+      "identifier": "fs:allow-home-read-recursive"
+    },
     "sql:default",
     "sql:allow-load",
     "sql:allow-execute",

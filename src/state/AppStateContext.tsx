@@ -15,7 +15,7 @@ import {
   SettingsContext,
   THOUGHTS_NOTES_FOLDER,
 } from "./SettingsContext";
-import { exists, lstat, readDir } from "@tauri-apps/plugin-fs";
+import { exists, lstat, readDir, watch } from "@tauri-apps/plugin-fs";
 import { join } from "@tauri-apps/api/path";
 
 const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -85,11 +85,47 @@ const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
       for (const file of files) {
+        debug(`Checking file: ${file}`);
         if (!(await exists(file)) || (await lstat(file)).isDirectory) {
           db.execute("DELETE FROM documents WHERE filepath = $1", [file]);
         }
+        debug(`Done checking file: ${file}`);
       }
-      debug("finished");
+
+      debug(`${thoughts_folder!}`);
+
+      await watch(
+        thoughts_folder!,
+        (_event) => {
+          checkFiles();
+        },
+        {
+          delayMs: 500,
+          recursive: true,
+        }
+      );
+
+      await watch(
+        concepts_folder!,
+        (_event) => {
+          checkFiles();
+        },
+        {
+          delayMs: 500,
+          recursive: true,
+        }
+      );
+
+      await watch(
+        reference_folder!,
+        (_event) => {
+          checkFiles();
+        },
+        {
+          delayMs: 500,
+          recursive: true,
+        }
+      );
     };
     checkFiles();
   }, []);

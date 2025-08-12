@@ -23,9 +23,7 @@ const NotesView: React.FC<NotesViewProps> = ({ title, directory, style }) => {
 
   useEffect(() => {
     async function getNodes(name: string, path: string): Promise<Node> {
-      debug("test");
       const contents = await readDir(path);
-      debug("test");
 
       const node: Node = {
         id: path,

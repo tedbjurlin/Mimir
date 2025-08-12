@@ -49,7 +49,6 @@ const TextEditor: React.FC<{
         setTyping(true);
       }
       timeout.current = setTimeout(() => {
-        debug(`${timeout.current}`);
         setTyping(false);
         dispatch({
           type: "update_content",
