@@ -21,6 +21,7 @@
     "@tauri-apps/plugin-store": "^2.3.0",
     "lucide-react": "^0.536.0",
     "pnpm": "^10.14.0",
+    "prosemirror-example-setup": "^1.2.3",
     "prosemirror-markdown": "^1.13.2",
     "prosemirror-model": "^1.25.3",
     "prosemirror-schema-basic": "^1.2.4",
