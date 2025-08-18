@@ -10,13 +10,19 @@ import {
   defaultMarkdownParser,
   defaultMarkdownSerializer,
 } from "prosemirror-markdown";
+import { exampleSetup } from "prosemirror-example-setup";
 import { EditorState, Transaction } from "prosemirror-state";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppStateDispatchContext } from "@/state/AppStateContext";
 import { FileData } from "@/state/AppStateTypes";
 import { debug } from "@tauri-apps/plugin-log";
+import { Link } from "./text-editor-components/Link";
 
 const TYPING_TIMEOUT = 500;
+
+const nodeViews = {
+  link: Link,
+};
 
 const TextEditor: React.FC<{
   file: FileData;
@@ -29,10 +35,12 @@ const TextEditor: React.FC<{
   const [editorState, setEditorState] = useState(
     EditorState.create({
       schema: markdownSchema,
-      plugins: [reactKeys()],
+      plugins: [reactKeys(), ...exampleSetup({ schema: markdownSchema })],
       doc: defaultMarkdownParser.parse(file.contents),
     })
   );
+
+  debug(`${editorState.doc}`);
 
   useEffect(() => {
     return () => {
@@ -49,7 +57,6 @@ const TextEditor: React.FC<{
         setTyping(true);
       }
       timeout.current = setTimeout(() => {
-        debug(`${timeout.current}`);
         setTyping(false);
         dispatch({
           type: "update_content",
@@ -65,7 +72,11 @@ const TextEditor: React.FC<{
   }
 
   return (
-    <ProseMirror state={editorState} dispatchTransaction={dispatchTransaction}>
+    <ProseMirror
+      state={editorState}
+      nodeViews={nodeViews}
+      dispatchTransaction={dispatchTransaction}
+    >
       <ProseMirrorDoc />
     </ProseMirror>
   );

@@ -8,6 +8,10 @@ import { Store } from "@tauri-apps/plugin-store";
 import SelectDirectories from "@/components/SelectDirectories";
 import { debug } from "@tauri-apps/plugin-log";
 
+export const THOUGHTS_NOTES_FOLDER = "thoughts-notes-folder";
+export const CONCEPTS_NOTES_FOLDER = "concepts-notes-folder";
+export const REFERENCE_NOTES_FOLDER = "reference-notes-folder";
+
 const SettingsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [store, setStore] = useState<Store | null>(null);
   const [loaded, setLoaded] = useState<boolean | null>(null);
@@ -19,9 +23,9 @@ const SettingsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       debug(`store acquired: ${store}`);
 
       if (
-        (await store.has("thoughts-notes-folder")) &&
+        (await store.has(THOUGHTS_NOTES_FOLDER)) &&
         (await store.has("concepts-notes-folder")) &&
-        (await store.has("reference-notes-folder"))
+        (await store.has(REFERENCE_NOTES_FOLDER))
       ) {
         setLoaded(true);
       }
