@@ -1,15 +1,14 @@
 import { Splitter } from "@ark-ui/react";
-import WorkspaceBody from "./WorkspaceBody";
-import NotesView from "./NotesView";
-import SideDock from "./SideDock";
-import LeftLeaf from "./LeftLeaf";
+import MainPanel from "@/components/MainPanel";
+import SideDock from "@/components/SideDock";
+import LeftLeaf from "@/components/LeftLeaf";
 import { useState } from "react";
 
-const WorkspaceContainer: React.FC = () => {
+const Workspace: React.FC = () => {
   const [leftSelectedPanel, setLeftSelectedPanel] = useState("thought");
 
   return (
-    <div className="workspace-container">
+    <div className="workspace">
       <SideDock
         left_panel={leftSelectedPanel}
         set_left_panel={setLeftSelectedPanel}
@@ -17,22 +16,19 @@ const WorkspaceContainer: React.FC = () => {
       <Splitter.Root
         panels={[
           { id: "left-leaf", collapsible: true, minSize: 10 },
-          { id: "workspace-body" },
+          { id: "main-panel" },
           { id: "right-leaf", collapsible: true, minSize: 10 },
         ]}
       >
         <Splitter.Panel id="left-leaf">
           <LeftLeaf selected_panel={leftSelectedPanel} />
         </Splitter.Panel>
-        <Splitter.ResizeTrigger
-          id="left-leaf:workspace-body"
-          aria-label="Resize"
-        />
-        <Splitter.Panel id="workspace-body">
-          <WorkspaceBody />
+        <Splitter.ResizeTrigger id="left-leaf:main-panel" aria-label="Resize" />
+        <Splitter.Panel id="main-panel">
+          <MainPanel />
         </Splitter.Panel>
         <Splitter.ResizeTrigger
-          id="workspace-body:right-leaf"
+          id="main-panel:right-leaf"
           aria-label="Resize"
         />
         <Splitter.Panel id="right-leaf">Right</Splitter.Panel>
@@ -41,4 +37,4 @@ const WorkspaceContainer: React.FC = () => {
   );
 };
 
-export default WorkspaceContainer;
+export default Workspace;

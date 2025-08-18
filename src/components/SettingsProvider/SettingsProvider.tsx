@@ -24,10 +24,12 @@ const SettingsProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
       if (
         (await store.has(THOUGHTS_NOTES_FOLDER)) &&
-        (await store.has("concepts-notes-folder")) &&
+        (await store.has(CONCEPTS_NOTES_FOLDER)) &&
         (await store.has(REFERENCE_NOTES_FOLDER))
       ) {
         setLoaded(true);
+      } else {
+        setLoaded(false);
       }
     }
     getStore();

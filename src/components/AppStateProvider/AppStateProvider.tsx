@@ -5,8 +5,8 @@ import {
   useEffect,
   useReducer,
 } from "react";
-import { AppState, AppStateAction } from "./AppStateTypes";
-import { appStateReducer } from "./AppStateReducer";
+import { AppState, AppStateAction } from "./AppStateProvider.types";
+import { appStateReducer } from "./AppState.reducer";
 import Database from "@tauri-apps/plugin-sql";
 import { debug } from "@tauri-apps/plugin-log";
 import {
@@ -14,7 +14,7 @@ import {
   REFERENCE_NOTES_FOLDER,
   SettingsContext,
   THOUGHTS_NOTES_FOLDER,
-} from "./SettingsContext";
+} from "@/components/SettingsProvider";
 import { exists, lstat, readDir, watch } from "@tauri-apps/plugin-fs";
 import { join } from "@tauri-apps/api/path";
 
@@ -104,7 +104,7 @@ const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({
 
       await watch(
         [thoughts_folder!, concepts_folder!, reference_folder!],
-        (event) => {
+        (_event) => {
           // ideally, I should be deciding what to do based off
           // of the kind of change, rather than rerunning entirely.
           //const { type, paths } = event;

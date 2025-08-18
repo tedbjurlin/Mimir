@@ -1,5 +1,5 @@
 import { debug } from "@tauri-apps/plugin-log";
-import { AppState, AppStateAction, TabGroupNode, WorkspaceNode } from "./AppStateTypes";
+import { AppState, AppStateAction, TabGroupNode, WorkspaceNode } from "./AppStateProvider.types";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 export function appStateReducer(prevState: AppState, action: AppStateAction): AppState {

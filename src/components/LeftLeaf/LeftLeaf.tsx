@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import NotesView from "./NotesView";
+import NotesView from "@/components/FileListing";
 import {
   CONCEPTS_NOTES_FOLDER,
   REFERENCE_NOTES_FOLDER,
   SettingsContext,
   THOUGHTS_NOTES_FOLDER,
-} from "@/state/SettingsContext";
+} from "@/components/SettingsProvider";
 
 type LeftLeafProps = {
   selected_panel: string;

@@ -3,8 +3,6 @@ import {
   ProseMirrorDoc,
   reactKeys,
 } from "@handlewithcare/react-prosemirror";
-import { DOMParser } from "prosemirror-model";
-import { schema as basicSchema } from "prosemirror-schema-basic";
 import {
   schema as markdownSchema,
   defaultMarkdownParser,
@@ -13,18 +11,17 @@ import {
 import { exampleSetup } from "prosemirror-example-setup";
 import { EditorState, Transaction } from "prosemirror-state";
 import { useContext, useEffect, useRef, useState } from "react";
-import { AppStateDispatchContext } from "@/state/AppStateContext";
-import { FileData } from "@/state/AppStateTypes";
+import { AppStateDispatchContext } from "@/components/AppStateProvider";
 import { debug } from "@tauri-apps/plugin-log";
-import { Link } from "./text-editor-components/Link";
-
-const TYPING_TIMEOUT = 500;
+import { TYPING_TIMEOUT } from "./NoteEditor.constants";
+import { FileData } from "@/types";
+import { Link } from "./ProseMirrorComponents/Link";
 
 const nodeViews = {
   link: Link,
 };
 
-const TextEditor: React.FC<{
+const NoteEditor: React.FC<{
   file: FileData;
   tab_path: ("left" | "right")[];
 }> = ({ file, tab_path }) => {
@@ -82,4 +79,4 @@ const TextEditor: React.FC<{
   );
 };
 
-export default TextEditor;
+export default NoteEditor;
