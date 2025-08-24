@@ -1,3 +1,5 @@
+import { FileData } from "@/types";
+
 export type AppState = {
   workspace_state: PanelTreeNode | TabGroupNode;
 }
@@ -45,10 +47,4 @@ type AppStateContentAction = {
   title: string;
   data: FileData;
   path: ("left" | "right")[];
-}
-
-export type FileData = {
-  name: string;
-  filepath: string;
-  contents: string;
 }

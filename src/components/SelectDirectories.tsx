@@ -2,7 +2,7 @@ import {
   CONCEPTS_NOTES_FOLDER,
   REFERENCE_NOTES_FOLDER,
   THOUGHTS_NOTES_FOLDER,
-} from "@/state/SettingsContext";
+} from "@/components/SettingsProvider";
 import { open } from "@tauri-apps/plugin-dialog";
 import { load, Store } from "@tauri-apps/plugin-store";
 import { FolderIcon } from "lucide-react";

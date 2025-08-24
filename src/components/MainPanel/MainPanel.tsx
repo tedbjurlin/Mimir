@@ -1,14 +1,15 @@
 import {
   AppStateContext,
   AppStateDispatchContext,
-} from "@/state/AppStateContext";
-import { PanelTreeNode, TabGroupNode } from "@/state/AppStateTypes";
+  PanelTreeNode,
+  TabGroupNode,
+} from "@/components/AppStateProvider";
 import { Splitter, Tabs } from "@ark-ui/react";
 import { useContext } from "react";
-import TextEditor from "./TextEditor";
+import NoteEditor from "@/components/NoteEditor";
 import { XIcon } from "lucide-react";
 
-const WorkspaceBody: React.FC = () => {
+const MainPanel: React.FC = () => {
   const appState = useContext(AppStateContext)!;
   const dispatch = useContext(AppStateDispatchContext)!;
 
@@ -82,7 +83,7 @@ const WorkspaceBody: React.FC = () => {
             {body.tabs.map((tab) => {
               return (
                 <Tabs.Content key={tab.uuid} value={tab.uuid}>
-                  <TextEditor file={tab.contents} tab_path={body.path} />
+                  <NoteEditor file={tab.contents} tab_path={body.path} />
                 </Tabs.Content>
               );
             })}
@@ -94,4 +95,4 @@ const WorkspaceBody: React.FC = () => {
   return renderBody(appState!.workspace_state);
 };
 
-export default WorkspaceBody;
+export default MainPanel;

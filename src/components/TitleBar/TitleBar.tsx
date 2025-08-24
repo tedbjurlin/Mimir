@@ -1,5 +1,5 @@
 import { EyeClosed, Maximize, Minimize, X } from "lucide-react";
-import TitleBarMenu from "./title-bar-components/TitleBarMenu";
+import TitleBarMenu from "./TitleBarMenu";
 
 const TitleBar: React.FC = () => {
   return (

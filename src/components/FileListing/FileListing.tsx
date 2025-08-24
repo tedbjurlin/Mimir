@@ -3,10 +3,8 @@ import { readTextFile, readDir } from "@tauri-apps/plugin-fs";
 import { extname, join } from "@tauri-apps/api/path";
 import { ChevronRightIcon, FileIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { AppStateDispatchContext } from "@/state/AppStateContext";
+import { AppStateDispatchContext } from "@/components/AppStateProvider";
 import { invoke } from "@tauri-apps/api/core";
-import Database from "@tauri-apps/plugin-sql";
-import { debug } from "@tauri-apps/plugin-log";
 
 const textExtensions = ["txt", "md", "typ"];
 

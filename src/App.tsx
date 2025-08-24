@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import "./App.scss";
-import TitleBar from "./components/TitleBar";
-import WorkspaceContainer from "./components/WorkspaceContainer";
-import AppStateProvider from "./state/AppStateContext";
+import TitleBar from "@/components/TitleBar";
+import Workspace from "@/components/Workspace";
+import AppStateProvider from "@/components/AppStateProvider";
 
 const App: React.FC = () => {
   useEffect(() => {});
@@ -18,7 +18,7 @@ const App: React.FC = () => {
   return (
     <AppStateProvider>
       <TitleBar />
-      <WorkspaceContainer />
+      <Workspace />
     </AppStateProvider>
   );
 };
