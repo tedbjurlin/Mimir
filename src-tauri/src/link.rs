@@ -9,15 +9,15 @@ pub enum Link {
 
 fn find_wikilinks(file: String) -> Vec<(String, String)> {
     let re = Regex::new(
-        r"\[\[(?:(((?:[^\]\[|\\]|\\.)+))|(?:((?:[^\]\[|\\]+|\\.)+)\|((?:[^\]\[|\\]+|\\.)+)))\]\]",
+        r"\[\[(?:\s*((?:[^\]\[|\\]|\\.)+?)\s*)(?:\|(?:\s*((?:[^\]\[|\\]|\\.)+?)\s*))?\]\]",
     )
     .unwrap();
     re.captures_iter(&file)
         .map(|c| {
-            if let Some(_) = c.get(1) {
-                (c[1].trim().to_string(), c[2].trim().to_string())
+            if let Some(m) = c.get(2) {
+                (c[1].to_string(), m.as_str().to_string())
             } else {
-                (c[3].trim().to_string(), c[4].trim().to_string())
+                (c[1].to_string(), c[1].to_string())
             }
         })
         .collect::<Vec<(String, String)>>()
@@ -31,6 +31,7 @@ mod tests {
     fn matches_simple_wikilinks() {
         let test_text = "This is a simple [[wikilink]]. It does not have display text.";
         let result = find_wikilinks(test_text.into());
+        println!("{:?}", result);
         assert_eq!(vec![("wikilink".into(), "wikilink".into())], result)
     }
 
