@@ -1,12 +1,39 @@
-use regex::{Captures, Regex};
+use std::path::PathBuf;
 
-pub async fn check_md_links(file: String) {}
+use regex::Regex;
 
 pub enum Link {
-    Valid(String, String),
+    Valid(PathBuf, String),
     Invalid(String, String),
 }
 
+pub async fn check_md_links(file: String) {
+    let file_links = canonicalize_links(find_wikilinks(file.clone()));
+}
+
+fn canonicalize_links(links: Vec<(String, String)>) -> Vec<Link> {
+    links
+        .iter()
+        .map(|(link, display)| {
+            if let Some(path) = get_canon_path(link) {
+                Link::Valid(path, display.clone())
+            } else {
+                Link::Invalid(link.clone(), display.clone())
+            }
+        })
+        .collect()
+}
+
+/// Given a link to a note, gets the canonical path to the note, if it exists.
+fn get_canon_path(link: &String) -> Option<PathBuf> {
+    Some(PathBuf::new())
+}
+
+/// Finds all valid wikilinks in the given file.
+///
+/// A wikilink is a markdown link with the following syntax:
+/// `[[ url | display text ]]`. Wikilinks may omit the display text, in
+/// which case the link will display the url.
 fn find_wikilinks(file: String) -> Vec<(String, String)> {
     let re = Regex::new(
         r"\[\[(?:\s*((?:[^\]\[|\\]|\\.)+?)\s*)(?:\|(?:\s*((?:[^\]\[|\\]|\\.)+?)\s*))?\]\]",
